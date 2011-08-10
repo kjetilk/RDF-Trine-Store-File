@@ -4,10 +4,13 @@ use Test::More;
 use Test::RDF;
 use File::Util;
 use RDF::Trine;
+use File::Temp qw/tempfile cleanup/;
 
 use_ok('RDF::Trine::Store::File');
 
-my $store = RDF::Trine::Store::File->new('/tmp/file.nt');
+my ($fh, $filename) = tempfile();
+
+my $store = RDF::Trine::Store::File->new($filename);
 
 ok($store, 'Store object OK');
 
@@ -19,7 +22,7 @@ $store->add_statement(RDF::Trine::Statement->new(
 
 my($f) = File::Util->new();
 
-my($content) = $f->load_file('/tmp/file.nt');
+my($content) = $f->load_file(FH => $fh);
 
 is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
