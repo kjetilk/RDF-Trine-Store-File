@@ -26,4 +26,8 @@ my($content) = $f->load_file(FH => $fh);
 
 is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
+
+#my $nser = RDF::Trine::Serializer::NTriples::Canonical->new;
+#is_rdf($content, 'ntriples', $nser->serialize_model_to_string(RDF::Trine::Model->new($store)), 'ntriples', 'Content is correct');
+
 done_testing;
