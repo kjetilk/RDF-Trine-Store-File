@@ -9,6 +9,8 @@ use RDF::Trine::Serializer::NTriples::Canonical;
 use File::Data;
 use File::Util;
 use Scalar::Util qw(refaddr reftype blessed);
+use File::Temp qw/tempfile/;
+
 
 =head1 NAME
 
@@ -53,6 +55,14 @@ sub new {
 		    }, $class);
   return $self;
 }
+
+
+sub temporary_store {
+  my $class = shift;
+  my ($fh, $filename) = tempfile();
+  return $class->new($filename);
+}
+
 
 =head2 add_statement
 
