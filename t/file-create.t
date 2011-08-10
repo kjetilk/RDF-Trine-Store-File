@@ -12,9 +12,9 @@ my $store = RDF::Trine::Store::File->new('/tmp/file.nt');
 ok($store, 'Store object OK');
 
 $store->add_statement(RDF::Trine::Statement->new(
-						 RDF::Trine::Node::Resource('http://example.org/a'),
-						 RDF::Trine::Node::Resource('http://example.org/b'),
-						 RDF::Trine::Node::Resource('http://example.org/c')
+						 RDF::Trine::Node::Resource->new('http://example.org/a'),
+						 RDF::Trine::Node::Resource->new('http://example.org/b'),
+						 RDF::Trine::Node::Resource->new('http://example.org/c')
 						));
 
 my($f) = File::Util->new();

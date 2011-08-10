@@ -3,6 +3,12 @@ package RDF::Trine::Store::File;
 use 5.006;
 use strict;
 use warnings;
+use base qw(RDF::Trine::Store);
+use RDF::Trine::Error qw(:try);
+use RDF::Trine::Serializer::NTriples::Canonical;
+use File::Data;
+use File::Util;
+use Scalar::Util qw(refaddr reftype blessed);
 
 =head1 NAME
 
@@ -28,25 +34,39 @@ Perhaps a little code snippet.
     my $foo = RDF::Trine::Store::File->new();
     ...
 
-=head1 EXPORT
+=head1 METHODS
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
+=head2 new
 
 =cut
 
-sub function1 {
+sub new {
+  my $class = shift;
+  my $file  = shift;
+  my($f) = File::Util->new();
+  $f->touch($file);
+  my $self  = bless(
+		    {
+		     file => $file,
+		     fd   => File::Data->new($file),
+		     nser => RDF::Trine::Serializer::NTriples::Canonical->new,
+		    }, $class);
+  return $self;
 }
 
-=head2 function2
+=head2 add_statement
 
 =cut
 
-sub function2 {
+sub add_statement {
+  my ($self, $st) = @_;
+  unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
+    throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to add_statement";
+  }
+  my $mm = RDF::Trine::Model->temporary_model;
+  $mm->add_statement($st);
+  $self->{fd}->append($self->{nser}->serialize_model_to_string($mm));
+  return;
 }
 
 =head1 AUTHOR
