@@ -15,7 +15,7 @@ $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource('http://example.org/a'),
 						 RDF::Trine::Node::Resource('http://example.org/b'),
 						 RDF::Trine::Node::Resource('http://example.org/c')
-						);
+						));
 
 my($f) = File::Util->new();
 
