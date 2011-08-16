@@ -10,6 +10,7 @@ use File::Data;
 use File::Util;
 use Scalar::Util qw(refaddr reftype blessed);
 use File::Temp qw/tempfile/;
+use Carp qw/croak/;
 
 
 =head1 NAME
@@ -45,12 +46,15 @@ Perhaps a little code snippet.
 sub new {
   my $class = shift;
   my $file  = shift;
-  my($f) = File::Util->new();
-  $f->touch($file);
+  my($fu) = File::Util->new();
+  unless (-r $file) {
+    $fu->touch($file);
+  }
   my $self  = bless(
 		    {
 		     file => $file,
 		     fd   => File::Data->new($file),
+		     fu   => $fu,
 		     nser => RDF::Trine::Serializer::NTriples::Canonical->new,
 		    }, $class);
   return $self;
@@ -78,6 +82,27 @@ sub add_statement {
   $self->{fd}->append($self->{nser}->serialize_model_to_string($mm));
   return;
 }
+
+=item C<< get_contexts >>
+
+=cut
+
+sub get_contexts {
+  croak "Contexts not supported for the File store";
+}
+
+=item C<< size >>
+
+Returns the number of statements in the store.
+
+=cut
+
+sub size {
+  my $self = shift;
+  return $self->{fu}->line_count($self->{file});
+}
+
+
 
 =head1 AUTHOR
 
