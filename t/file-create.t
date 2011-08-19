@@ -22,12 +22,15 @@ $store->add_statement(RDF::Trine::Statement->new(
 
 is($store->size, 1, 'Store has one statement');
 
-
 my($f) = File::Util->new();
 
-my($content) = $f->load_file(FH => $fh);
+{
+  my($content) = $f->load_file($filename);
 
-is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
+  is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
+
+  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
+}
 
 $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
@@ -43,8 +46,11 @@ $store->add_statement(RDF::Trine::Statement->new(
 
 is($store->size, 3, 'Store has three statements');
 
+{
+  my($content) = $f->load_file($filename);
+  is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
-#my $nser = RDF::Trine::Serializer::NTriples::Canonical->new;
-#is_rdf($content, 'ntriples', $nser->serialize_model_to_string(RDF::Trine::Model->new($store)), 'ntriples', 'Content is correct');
+#  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
+}
 
 done_testing;
