@@ -53,7 +53,6 @@ sub new {
   my $self  = bless(
 		    {
 		     file => $file,
-		     fd   => File::Data->new($file),
 		     fu   => $fu,
 		     nser => RDF::Trine::Serializer::NTriples::Canonical->new,
 		    }, $class);
@@ -79,7 +78,8 @@ sub add_statement {
   }
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement($st);
-  $self->{fd}->append($self->{nser}->serialize_model_to_string($mm));
+  my $fd = File::Data->new($self->{file});
+  $fd->append($self->{nser}->serialize_model_to_string($mm));
   return;
 }
 
