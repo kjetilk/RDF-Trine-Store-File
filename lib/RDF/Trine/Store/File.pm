@@ -102,6 +102,27 @@ sub size {
   return $self->{fu}->line_count($self->{file});
 }
 
+# Private method to create a regexp to be used in all kind of searching
+
+sub _search_regexp {
+  my $self = shift;
+  my $i = 1;
+  my @stmt;
+  foreach my $term (@_) { # Create an array of RDF terms for later replacing for variables
+    my $outterm = $term || RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i");
+    push(@stmt, $outterm);
+    $i++;
+  }
+  my $mm = RDF::Trine::Model->temporary_model;
+  $mm->add_statement(RDF::Trine::Statement->new(@stmt));
+  my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
+  chomp($triple_resources);
+  $triple_resources =~ s/\.\s*$/\\./;
+  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/(.*?)/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-3>/(.*)/;
+  return '^' . $triple_resources . '\r\n';
+}
+
 
 
 =head1 AUTHOR
