@@ -6,11 +6,13 @@ use warnings;
 use base qw(RDF::Trine::Store);
 use RDF::Trine::Error qw(:try);
 use RDF::Trine::Serializer::NTriples::Canonical;
+use RDF::Trine::Parser;
 use File::Data;
 use File::Util;
 use Scalar::Util qw(refaddr reftype blessed);
 use File::Temp qw/tempfile/;
 use Carp qw/croak/;
+use Log::Log4perl;
 
 
 =head1 NAME
@@ -55,6 +57,7 @@ sub new {
 		     file => $file,
 		     fu   => $fu,
 		     nser => RDF::Trine::Serializer::NTriples::Canonical->new,
+		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
 		    }, $class);
   return $self;
 }
@@ -78,10 +81,30 @@ sub add_statement {
   }
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement($st);
+  $self->{log}->debug("Attempting addition of statement");
   my $fd = File::Data->new($self->{file});
   $fd->append($self->{nser}->serialize_model_to_string($mm));
   return;
 }
+
+=head2 get_statements
+
+=cut
+
+sub get_statements {
+  my $self = shift;
+  my $regexp = $self->_search_regexp(@_);
+  my $fd = File::Data->new($self->{file});
+  $self->{log}->debug("Searching with regexp $regexp");
+  my @lines = $fd->SEARCH($regexp);
+  warn Dumper(\@lines);
+  my $parser     = RDF::Trine::Parser->new( 'ntriples' );  
+  my $mm = RDF::Trine::Model->temporary_model;
+  $parser->parse_into_model( '', join('', @lines), $mm );
+  return $mm->get_statements(undef, undef, undef, undef);
+}
+
+
 
 =item C<< get_contexts >>
 

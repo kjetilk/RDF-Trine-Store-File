@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 
 use Test::More;
+use Log::Log4perl;
+
+Log::Log4perl->easy_init( { level   =>  $TRACE} ) if $ENV{TEST_VERBOSE};
 
 use_ok('RDF::Trine::Store::File');
 
