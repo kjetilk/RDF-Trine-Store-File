@@ -118,9 +118,9 @@ sub _search_regexp {
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/(.*?)/;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-3>/(.*)/;
-  return '^' . $triple_resources . '\r\n';
+  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
+  return '^(' . $triple_resources . '\r\n)';
 }
 
 
