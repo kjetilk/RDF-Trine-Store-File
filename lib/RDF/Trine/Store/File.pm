@@ -105,6 +105,21 @@ sub get_statements {
 }
 
 
+=head2 remove_statements
+
+=cut
+
+sub remove_statements {
+  my $self = shift;
+  my $regexp = $self->_search_regexp(@_);
+  my $fd = File::Data->new($self->{file});
+  $self->{log}->debug("Removing with regexp $regexp");
+  my @lines = $fd->REPLACE($regexp, '');
+  $self->{log}->info("Removed " . scalar @lines . " statements.");
+  return;
+}
+
+
 
 =item C<< get_contexts >>
 

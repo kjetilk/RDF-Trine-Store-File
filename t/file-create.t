@@ -53,4 +53,11 @@ is($store->size, 3, 'Store has three statements');
 #  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
 }
 
+$store->remove_statements(
+			  RDF::Trine::Node::Resource->new('http://example.org/a'),
+			  RDF::Trine::Node::Resource->new('http://example.org/d'),
+			  undef);
+
+is($store->size, 1, 'Store has one statement');
+
 done_testing;
