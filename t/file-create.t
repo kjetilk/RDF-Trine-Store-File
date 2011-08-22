@@ -64,7 +64,7 @@ $store->remove_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/e')
 						));
 
-is($store->size, 3, 'Store has 3 statements after remove');
+is($store->size, 3, 'Store has 3 statements after single remove');
 
 
 
@@ -73,6 +73,6 @@ $store->remove_statements(
 			  RDF::Trine::Node::Resource->new('http://example.org/d'),
 			  undef);
 
-is($store->size, 1, 'Store has one statement');
+is($store->size, 1, 'Store has one statement after match-remove');
 
 done_testing;

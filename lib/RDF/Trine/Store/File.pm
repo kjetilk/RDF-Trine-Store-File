@@ -175,7 +175,9 @@ sub _search_regexp {
   $triple_resources =~ s/\.\s*$/\\./;
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
-  return '\'^(' . $triple_resources . '\r\n)\'';
+  my $out = '(' . $triple_resources . '\r\n)';
+  warn "Regexp: $out";
+  return $out;
 }
 
 
