@@ -43,8 +43,13 @@ $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/d'),
 						 RDF::Trine::Node::Literal->new('Dahut')
 						));
+$store->add_statement(RDF::Trine::Statement->new(
+						 RDF::Trine::Node::Resource->new('http://example.org/a'),
+						 RDF::Trine::Node::Resource->new('http://example.org/d'),
+						 RDF::Trine::Node::Literal->new('Dahut', 'en')
+						));
 
-is($store->size, 3, 'Store has three statements');
+is($store->size, 4, 'Store has four statements');
 
 {
   my($content) = $f->load_file($filename);
@@ -52,6 +57,16 @@ is($store->size, 3, 'Store has three statements');
 
 #  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
 }
+
+$store->remove_statement(RDF::Trine::Statement->new(
+						 RDF::Trine::Node::Resource->new('http://example.org/a'),
+						 RDF::Trine::Node::Resource->new('http://example.org/d'),
+						 RDF::Trine::Node::Resource->new('http://example.org/e')
+						));
+
+is($store->size, 3, 'Store has 3 statements after remove');
+
+
 
 $store->remove_statements(
 			  RDF::Trine::Node::Resource->new('http://example.org/a'),

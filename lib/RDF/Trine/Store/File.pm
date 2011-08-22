@@ -104,6 +104,23 @@ sub get_statements {
   return $mm->get_statements(undef, undef, undef, undef);
 }
 
+=head2 remove_statement
+
+=cut
+
+sub remove_statement {
+  my ($self, $st) = @_;
+  unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
+    throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to remove_statement";
+  }
+  my $mm = RDF::Trine::Model->temporary_model;
+  $mm->add_statement($st);
+  $self->{log}->debug("Attempting removal of statement");
+  my $fd = File::Data->new($self->{file});
+  $fd->REPLACE($self->{nser}->serialize_model_to_string($mm), '');
+  return;
+}
+
 
 =head2 remove_statements
 
@@ -158,7 +175,7 @@ sub _search_regexp {
   $triple_resources =~ s/\.\s*$/\\./;
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
-  return '^(' . $triple_resources . '\r\n)';
+  return '\'^(' . $triple_resources . '\r\n)\'';
 }
 
 
