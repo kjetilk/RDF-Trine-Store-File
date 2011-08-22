@@ -20,7 +20,9 @@ $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/c')
 						));
 
-is($store->size, 1, 'Store has one statement');
+is($store->size, 1, 'Store has one statement according to size');
+
+is($store->count_statements(undef, undef, undef), 1, 'Store has one statement according to count');
 
 my($f) = File::Util->new();
 
@@ -51,6 +53,18 @@ $store->add_statement(RDF::Trine::Statement->new(
 
 is($store->size, 4, 'Store has four statements');
 
+is($store->count_statements(
+			    RDF::Trine::Node::Resource->new('http://example.org/a'),
+			    RDF::Trine::Node::Resource->new('http://example.org/d'),
+			    undef), 3, 'Three statements with object unbound');
+
+is($store->count_statements(
+			    undef,
+			    RDF::Trine::Node::Resource->new('http://example.org/d'),
+			    RDF::Trine::Node::Literal->new('Dahut', 'en')),
+   1, '1 statement with object bound to lang literal');
+
+
 {
   my($content) = $f->load_file($filename);
   is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
@@ -66,7 +80,7 @@ $store->remove_statement(RDF::Trine::Statement->new(
 
 is($store->size, 3, 'Store has 3 statements after single remove');
 
-
+is($store->size, $store->count_statements(undef, undef, undef), 'count and size are equal');
 
 $store->remove_statements(
 			  RDF::Trine::Node::Resource->new('http://example.org/a'),

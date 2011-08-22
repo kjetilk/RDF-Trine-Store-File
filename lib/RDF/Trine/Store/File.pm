@@ -93,16 +93,33 @@ sub add_statement {
 
 sub get_statements {
   my $self = shift;
-  my $regexp = $self->_search_regexp(@_);
-  my $fd = File::Data->new($self->{file});
-  $self->{log}->debug("Searching with regexp $regexp");
-  my @lines = $fd->SEARCH($regexp);
+  my @lines = $self->_search_statements(@_);
   warn Dumper(\@lines);
   my $parser     = RDF::Trine::Parser->new( 'ntriples' );  
   my $mm = RDF::Trine::Model->temporary_model;
   $parser->parse_into_model( '', join('', @lines), $mm );
   return $mm->get_statements(undef, undef, undef, undef);
 }
+
+=head2 count_statements
+
+=cut
+
+sub count_statements {
+  my $self = shift;
+  my @lines = $self->_search_statements(@_);
+  return scalar @lines;
+}
+
+sub _search_statements {
+  my $self = shift;
+  my $regexp = $self->_search_regexp(@_);
+  my $fd = File::Data->new($self->{file});
+  $self->{log}->debug("Searching with regexp $regexp");
+  return $fd->SEARCH($regexp);
+}
+
+
 
 =head2 remove_statement
 
@@ -173,7 +190,7 @@ sub _search_regexp {
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/;
+  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
   my $out = '(' . $triple_resources . '\r\n)';
   warn "Regexp: $out";
