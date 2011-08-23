@@ -9,7 +9,7 @@ use RDF::Trine::Serializer::NTriples::Canonical;
 use RDF::Trine::Parser;
 use File::Data;
 use File::Util;
-use Scalar::Util qw(refaddr reftype blessed);
+use Scalar::Util qw(blessed);
 use File::Temp qw/tempfile/;
 use Carp qw/croak/;
 use Log::Log4perl;
