@@ -95,8 +95,7 @@ sub add_statement {
 sub get_statements {
   my $self = shift;
   my @lines = $self->_search_statements(@_);
-  warn Dumper(\@lines);
-  my $parser     = RDF::Trine::Parser->new( 'ntriples' );  
+  my $parser = RDF::Trine::Parser->new( 'ntriples' );  
   my $mm = RDF::Trine::Model->temporary_model;
   $parser->parse_into_model( '', join('', @lines), $mm );
   return $mm->get_statements(undef, undef, undef, undef);
@@ -212,7 +211,7 @@ sub _search_regexp {
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
   my $out = '(' . $triple_resources . '\r\n)';
-  warn "Regexp: $out";
+  $self->{log}->debug("Search regexp: $out");
   return $out;
 }
 
