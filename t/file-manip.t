@@ -101,4 +101,8 @@ $store->remove_statements(
 
 is($store->size, 1, 'Store has one statement after match-remove');
 
+$store->nuke;
+
+ok(! -e $filename, 'File is gone');
+
 done_testing;

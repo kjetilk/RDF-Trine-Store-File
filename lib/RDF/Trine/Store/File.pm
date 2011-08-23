@@ -188,7 +188,10 @@ sub etag {
   return md5_hex($self->{fu}->last_modified($self->{file}));
 }
 
-
+sub nuke {
+  my $self = shift;
+  unlink $self->{file};
+}
 
 # Private method to create a regexp to be used in all kind of searching
 
