@@ -13,6 +13,7 @@ use Scalar::Util qw(refaddr reftype blessed);
 use File::Temp qw/tempfile/;
 use Carp qw/croak/;
 use Log::Log4perl;
+use Digest::MD5 ('md5_hex');
 
 
 =head1 NAME
@@ -173,6 +174,21 @@ sub size {
   my $self = shift;
   return $self->{fu}->line_count($self->{file});
 }
+
+=item C<< etag >>
+
+Returns an etag based on the last modification time of the file. Note:
+This has resolution of one second, so it cannot be relied on for data
+that changes fast.
+
+=cut
+
+sub etag {
+  my $self = shift;
+  return md5_hex($self->{fu}->last_modified($self->{file}));
+}
+
+
 
 # Private method to create a regexp to be used in all kind of searching
 

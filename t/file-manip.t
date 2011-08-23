@@ -24,6 +24,13 @@ is($store->size, 1, 'Store has one statement according to size');
 
 is($store->count_statements(undef, undef, undef), 1, 'Store has one statement according to count');
 
+my $first_etag = $store->etag;
+
+like($first_etag, qr/\w{32}/, 'Etag is 32 chars long, only hex');
+
+note "Sleep one second to ensure new etag";
+sleep 1;
+
 my($f) = File::Util->new();
 
 {
@@ -64,6 +71,11 @@ is($store->count_statements(
 			    RDF::Trine::Node::Literal->new('Dahut', 'en')),
    1, '1 statement with object bound to lang literal');
 
+my $second_etag = $store->etag;
+
+like($second_etag, qr/\w{32}/, 'Etag is 32 chars long, only hex');
+
+isnt($first_etag, $second_etag, 'Etags differ');
 
 {
   my($content) = $f->load_file($filename);
