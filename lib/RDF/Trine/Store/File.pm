@@ -50,7 +50,7 @@ sub new {
   my $class = shift;
   my $file  = shift;
   my($fu) = File::Util->new();
-  unless (-r $file) {
+  unless (-e $file) {
     $fu->touch($file);
   }
   my $self  = bless(
