@@ -35,4 +35,6 @@ isa_ok($store, 'RDF::Trine::Store::File');
   is($regex, '(<http://example.org/a> <.*?> .* \.\r\n)', 'predicate and object variable matches');
 }
 
+$store->nuke;
+
 done_testing;
