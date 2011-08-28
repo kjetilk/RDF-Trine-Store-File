@@ -22,11 +22,11 @@ RDF::Trine::Store::File - Using a file with canonical N-Triples as triplestore
 
 =head1 VERSION
 
-Version 0.01
+Version 0.01_01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.01_01';
 
 
 =head1 SYNOPSIS
@@ -221,8 +221,7 @@ Permanently removes the store file and its data.
 =cut
 
 sub nuke {
-  my $self = shift;
-  unlink $self->{file};
+  unlink $_[0]->{file};
 }
 
 # Private method to create a regexp to be used in all kind of searching
