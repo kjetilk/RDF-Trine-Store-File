@@ -31,14 +31,15 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+To be used as a normal triple store.
 
-Perhaps a little code snippet.
-
-    use RDF::Trine::Store::File;
-
-    my $foo = RDF::Trine::Store::File->new();
-    ...
+  my $store = RDF::Trine::Store::File->new($filename);
+  $store->add_statement(RDF::Trine::Statement->new(
+						   RDF::Trine::Node::Resource->new('http://example.org/a'),
+						   RDF::Trine::Node::Resource->new('http://example.org/b'),
+						   RDF::Trine::Node::Resource->new('http://example.org/c')
+						  ));
+  ...
 
 =head1 METHODS
 
