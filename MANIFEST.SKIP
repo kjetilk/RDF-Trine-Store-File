@@ -1,0 +1,10 @@
+#defaults
+t/store-file.t
+^Makefile(.old)?$
+^blib/
+^blibdirs$
+^pm_to_blib$
+^.git/
+~$
+.bak$
+.tar.gz$

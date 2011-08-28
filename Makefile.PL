@@ -7,10 +7,16 @@ author   q{Kjetil Kjernsmo <kjetilk@cpan.org>};
 license  'perl';
 
 test_requires 'Test::More';
+test_requires 'Test::RDF';
 
 requires 'RDF::Trine';
 requires 'File::Temp';
 requires 'File::Util';
+requires 'File::Data';
+requires 'Scalar::Util';
+requires 'Carp';
+requires 'Log::Log4perl';
+requires 'Digest::MD5';
 
 
 author_tests('xt');
