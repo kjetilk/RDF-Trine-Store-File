@@ -18,7 +18,7 @@ use Digest::MD5 ('md5_hex');
 
 =head1 NAME
 
-RDF::Trine::Store::File - The great new RDF::Trine::Store::File!
+RDF::Trine::Store::File - Using a file with canonical N-Triples as triplestore
 
 =head1 VERSION
 
@@ -42,7 +42,10 @@ Perhaps a little code snippet.
 
 =head1 METHODS
 
-=head2 new
+=head2 new($filename)
+
+A constructor, takes a filename as parameter. If the file doesn't
+exist, it will be created.
 
 =cut
 
@@ -63,6 +66,11 @@ sub new {
   return $self;
 }
 
+=head2 temporary_store
+
+Constructor that creates a temporary file to work on.
+
+=cut
 
 sub temporary_store {
   my $class = shift;
@@ -71,7 +79,9 @@ sub temporary_store {
 }
 
 
-=head2 add_statement
+=head2 add_statement($statement)
+
+Adds the specified C<$statement> to the underlying model.
 
 =cut
 
@@ -88,7 +98,10 @@ sub add_statement {
   return;
 }
 
-=head2 get_statements
+=head2 get_statements($subject, $predicate, $object)
+
+Returns a stream object of all statements matching the specified subject,
+predicate and objects. Any of the arguments may be undef to match any value.
 
 =cut
 
@@ -101,7 +114,10 @@ sub get_statements {
   return $mm->get_statements(undef, undef, undef, undef);
 }
 
-=head2 count_statements
+=head2 count_statements($subject, $predicate, $object)
+
+Returns a count of all the statements matching the specified subject,
+predicate and objects. Any of the arguments may be undef to match any value.
 
 =cut
 
@@ -110,6 +126,8 @@ sub count_statements {
   my @lines = $self->_search_statements(@_);
   return scalar @lines;
 }
+
+# Private method to actually search for statements based on a regexp.
 
 sub _search_statements {
   my $self = shift;
@@ -121,7 +139,9 @@ sub _search_statements {
 
 
 
-=head2 remove_statement
+=head2 remove_statement($statement)
+
+Removes the specified C<$statement> from the underlying model.
 
 =cut
 
@@ -139,7 +159,10 @@ sub remove_statement {
 }
 
 
-=head2 remove_statements
+=head2 remove_statements($subject, $predicate, $object)
+
+Removes all statement matching the specified subject, predicate and
+objects. Any of the arguments may be undef to match any value.
 
 =cut
 
@@ -155,15 +178,18 @@ sub remove_statements {
 
 
 
-=item C<< get_contexts >>
+=head2 get_contexts
+
+Contexts are not supported for this store.
 
 =cut
+
 
 sub get_contexts {
   croak "Contexts not supported for the File store";
 }
 
-=item C<< size >>
+=head2 size
 
 Returns the number of statements in the store.
 
@@ -174,7 +200,7 @@ sub size {
   return $self->{fu}->line_count($self->{file});
 }
 
-=item C<< etag >>
+=head2 etag
 
 Returns an etag based on the last modification time of the file. Note:
 This has resolution of one second, so it cannot be relied on for data
@@ -186,6 +212,12 @@ sub etag {
   my $self = shift;
   return md5_hex($self->{fu}->last_modified($self->{file}));
 }
+
+=head2 nuke
+
+Permanently removes the store file and its data.
+
+=cut
 
 sub nuke {
   my $self = shift;
@@ -223,9 +255,12 @@ Kjetil Kjernsmo, C<< <kjetilk at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-rdf-trine-store-file at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-rdf-trine-store-file at rt.cpan.org>, or through the web
+interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File>.
+I will be notified, and then you'll automatically be notified of
+progress on your bug as I make changes.
 
 
 
@@ -258,9 +293,6 @@ L<http://cpanratings.perl.org/d/RDF-Trine-Store-File>
 L<http://search.cpan.org/dist/RDF-Trine-Store-File/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
 
 
 =head1 LICENSE AND COPYRIGHT
