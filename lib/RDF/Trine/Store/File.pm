@@ -248,7 +248,46 @@ sub _search_regexp {
   return $out;
 }
 
+=head1 DISCUSSION
 
+This module is intended mostly as a simple backend to dump data to a
+file and do as little as possible in memory. Thus, it is mostly
+suitable in cases where a lot of data is written to file. It should be
+possible to use it as a SPARQL store with L<RDF::Query>, but the
+performance is likely to be somewhere between terrible and abyssmal,
+so don't do that unless you are prepared to be waiting around.
+
+On the good side, adding statements should be pretty fast, as it just
+appends to a file. The C<size> method should be pretty fast too, as it
+just counts the lines in that file. Finally, it supports the C<etag>
+method, not perfectly, but that's still pretty good!
+
+It uses a lot of heuristics tied to the format chosen, i.e. Canonical
+N-Triples. That's a line-based format, with predictable amounts of
+whitespace, allowing us to create relatively simple regular
+expressions as search patterns in the file. This is likely to be
+somewhat fragile, but it kinda works.
+
+I've decided to use L<File::Data> to actually do the work with the
+file. Locking and that kind of stuff is done there and is thus Not My
+Problem. If it is yours, then L<File::Data> is probably the right
+place to go and fix it.
+
+
+=head1 TODO
+
+This is alpha-quality software and there are some important things to
+do before it is ready for general use:
+
+=over
+
+=item * Use the Test::RDF::Trine::Store test suite (without it, this module is arguably not well tested).
+
+=item * Support more constructors (e.g. C<new_with_config>)
+
+=item * Support bulk operations (somewhat less important)
+
+=back
 
 =head1 AUTHOR
 
@@ -272,6 +311,9 @@ You can find documentation for this module with the perldoc command.
 
     perldoc RDF::Trine::Store::File
 
+The perlrdf mailing list is the right place to seek help and discuss this module:
+
+L<http://lists.perlrdf.org/listinfo/dev>
 
 You can also look for information at:
 
