@@ -9,21 +9,20 @@
 
 
 <>
-    dc:title     "DOAP for RDF-Trine-Store-File-XML"@en ;
+    dc:title     "DOAP for RDF-Trine-Store-File"@en ;
     dc:subject   my:project ;
     dc:creator   <http://www.kjetil.kjernsmo.net/foaf#me> .
 
 my:project	 
     a           :Project ;
-    :name       "RDF-Trine-Store-File-XML" ;
-    :shortdesc  "Get XML::LibXML objects for rdf:XMLLiterals"@en ;
-    :created    "2009-12-06"^^xsd:date ;
+    :name       "RDF-Trine-Store-File" ;
+    :shortdesc  "Using a file with canonical N-Triples as triplestore"@en ;
+    :created    "2011-07-21"^^xsd:date ;
     :programming-language "Perl" ;
-    :homepage <http://search.cpan.org/dist/RDF-Trine-Store-File-XML/> ;
+    :homepage <http://search.cpan.org/dist/RDF-Trine-Store-File/> ;
     :maintainer <http://www.kjetil.kjernsmo.net/foaf#me> ;
-    :developer <http://kasei.us/about/foaf.xrdf#greg> ;
-    :bug-database <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File-XML> ;
-    :release    my:v_0_01 .
+    :bug-database <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File> ;
+    :release    my:v_0_01_01 .
 
 <http://www.kjetil.kjernsmo.net/foaf#me>
     a           foaf:Person ;
@@ -33,9 +32,9 @@ my:project
 
 
 
-my:v_0_01
+my:v_0_01_01
     a           :Version ;
-    dc:issued   "2010-04-05"^^xsd:date ;
-    :revision   "0.01"^^xsd:string ;
+    dc:issued   "2011-08-28"^^xsd:date ;
+    :revision   "0.01_01"^^xsd:string ;
     rdfs:label  "Initial release"@en .
 
