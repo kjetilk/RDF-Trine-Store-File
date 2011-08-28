@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 use Test::More;
-use Log::Log4perl;
+use Log::Log4perl qw(:easy);
 
 Log::Log4perl->easy_init( { level   =>  $TRACE} ) if $ENV{TEST_VERBOSE};
 
