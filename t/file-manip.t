@@ -38,7 +38,7 @@ my($f) = File::Util->new();
 
   is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
-  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
+  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'turtle', 'Content is correct');
 }
 
 $store->add_statement(RDF::Trine::Statement->new(
