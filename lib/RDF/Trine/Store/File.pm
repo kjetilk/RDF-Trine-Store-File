@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use base qw(RDF::Trine::Store);
 use RDF::Trine::Error qw(:try);
-use RDF::Trine::Serializer::NTriples::Canonical;
+use RDF::Trine::Serializer::NTriples;
 use RDF::Trine::Parser;
 use File::Data;
 use File::Util;
@@ -18,7 +18,7 @@ use Digest::MD5 ('md5_hex');
 
 =head1 NAME
 
-RDF::Trine::Store::File - Using a file with canonical N-Triples as triplestore
+RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 =head1 VERSION
 
@@ -61,7 +61,7 @@ sub new {
 		    {
 		     file => $file,
 		     fu   => $fu,
-		     nser => RDF::Trine::Serializer::NTriples::Canonical->new,
+		     nser => RDF::Trine::Serializer::NTriples->new,
 		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
 		    }, $class);
   return $self;
@@ -242,7 +242,7 @@ sub _search_regexp {
   $triple_resources =~ s/\.\s*$/\\./;
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
-  my $out = '(' . $triple_resources . '\r\n)';
+  my $out = '(' . $triple_resources . '\n)';
   $self->{log}->debug("Search regexp: $out");
   return $out;
 }
@@ -261,11 +261,11 @@ appends to a file. The C<size> method should be pretty fast too, as it
 just counts the lines in that file. Finally, it supports the C<etag>
 method, not perfectly, but that's still pretty good!
 
-It uses a lot of heuristics tied to the format chosen, i.e. Canonical
+It uses a lot of heuristics tied to the format chosen, i.e.
 N-Triples. That's a line-based format, with predictable amounts of
 whitespace, allowing us to create relatively simple regular
 expressions as search patterns in the file. This is likely to be
-somewhat fragile, but it kinda works.
+somewhat fragile but it kinda works.
 
 I've decided to use L<File::Data> to actually do the work with the
 file. Locking and that kind of stuff is done there and is thus Not My
