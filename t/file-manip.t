@@ -35,7 +35,7 @@ my($f) = File::Util->new();
 
 {
   my($content) = $f->load_file($filename);
-  warn $content;
+
   is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
   is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'turtle', 'Content is correct');
