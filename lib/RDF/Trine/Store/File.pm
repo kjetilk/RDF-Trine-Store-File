@@ -192,7 +192,8 @@ sub get_contexts {
 
 =head2 size
 
-Returns the number of statements in the store.
+Returns the number of statements in the store. Breaks if there are
+comments or empty lines in the file.
 
 =cut
 
@@ -265,7 +266,9 @@ It uses a lot of heuristics tied to the format chosen, i.e.
 N-Triples. That's a line-based format, with predictable amounts of
 whitespace, allowing us to create relatively simple regular
 expressions as search patterns in the file. This is likely to be
-somewhat fragile but it kinda works.
+somewhat fragile (it is making assumptions about the file that is true
+in the L<RDF::Trine::Serializer::Ntriples> case, but not in the
+format), but it kinda works.
 
 I've decided to use L<File::Data> to actually do the work with the
 file. Locking and that kind of stuff is done there and is thus Not My
