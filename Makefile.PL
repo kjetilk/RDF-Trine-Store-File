@@ -7,7 +7,7 @@ author   q{Kjetil Kjernsmo <kjetilk@cpan.org>};
 license  'perl';
 
 test_requires 'Test::More';
-test_requires 'Test::RDF';
+test_requires 'Test::RDF' => 0.24;
 
 requires 'RDF::Trine';
 requires 'File::Temp';
