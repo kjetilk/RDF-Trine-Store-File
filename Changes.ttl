@@ -22,7 +22,7 @@ my:project
     :homepage <http://search.cpan.org/dist/RDF-Trine-Store-File/> ;
     :maintainer <http://www.kjetil.kjernsmo.net/foaf#me> ;
     :bug-database <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File> ;
-    :release    my:v_0_01_01 .
+    :release    my:v_0_01_01, my:v_0_01_02 .
 
 <http://www.kjetil.kjernsmo.net/foaf#me>
     a           foaf:Person ;
@@ -37,4 +37,10 @@ my:v_0_01_01
     dc:issued   "2011-08-28"^^xsd:date ;
     :revision   "0.01_01"^^xsd:string ;
     rdfs:label  "Initial release"@en .
+
+my:v_0_01_02
+    a           :Version ;
+    dc:issued   "2011-10-10"^^xsd:date ;
+    :revision   "0.01_02"^^xsd:string ;
+    rdfs:label  "Use ordinary N-Triples."@en .
 

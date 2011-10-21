@@ -1,9 +1,8 @@
 NAME
-    RDF::Trine::Store::File - Using a file with canonical N-Triples as
-    triplestore
+    RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 VERSION
-    Version 0.01_01
+    Version 0.01_02
 
 SYNOPSIS
     To be used as a normal triple store.
@@ -48,7 +47,8 @@ METHODS
     Contexts are not supported for this store.
 
   size
-    Returns the number of statements in the store.
+    Returns the number of statements in the store. Breaks if there are
+    comments or empty lines in the file.
 
   etag
     Returns an etag based on the last modification time of the file. Note:
@@ -71,11 +71,13 @@ DISCUSSION
     just counts the lines in that file. Finally, it supports the "etag"
     method, not perfectly, but that's still pretty good!
 
-    It uses a lot of heuristics tied to the format chosen, i.e. Canonical
-    N-Triples. That's a line-based format, with predictable amounts of
-    whitespace, allowing us to create relatively simple regular expressions
-    as search patterns in the file. This is likely to be somewhat fragile,
-    but it kinda works.
+    It uses a lot of heuristics tied to the format chosen, i.e. N-Triples.
+    That's a line-based format, with predictable amounts of whitespace,
+    allowing us to create relatively simple regular expressions as search
+    patterns in the file. This is likely to be somewhat fragile (it is
+    making assumptions about the file that is true in the
+    RDF::Trine::Serializer::Ntriples case, but not in the format), but it
+    kinda works.
 
     I've decided to use File::Data to actually do the work with the file.
     Locking and that kind of stuff is done there and is thus Not My Problem.
