@@ -75,7 +75,7 @@ Constructor that creates a temporary file to work on.
 
 sub temporary_store {
   my $class = shift;
-  my ($fh, $filename) = tempfile();
+  my ($fh, $filename) = tempfile(EXLOCK => 0);
   return $class->new($filename);
 }
 

@@ -8,7 +8,7 @@ use File::Temp qw/tempfile cleanup/;
 
 use_ok('RDF::Trine::Store::File');
 
-my ($fh, $filename) = tempfile();
+my ($fh, $filename) = tempfile(EXLOCK => 0);
 
 my $store = RDF::Trine::Store::File->new($filename);
 
