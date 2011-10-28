@@ -2,7 +2,7 @@ NAME
     RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 VERSION
-    Version 0.01_02
+    Version 0.01_03
 
 SYNOPSIS
     To be used as a normal triple store.
