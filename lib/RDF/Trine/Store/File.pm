@@ -22,11 +22,11 @@ RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 =head1 VERSION
 
-Version 0.01_02
+Version 0.01_03
 
 =cut
 
-our $VERSION = '0.01_02';
+our $VERSION = '0.01_03';
 
 
 =head1 SYNOPSIS
