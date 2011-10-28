@@ -67,6 +67,14 @@ sub new {
   return $self;
 }
 
+
+sub _new_with_string {
+  my $class = shift;
+  return $class->new(shift);
+}
+
+
+
 =head2 temporary_store
 
 Constructor that creates a temporary file to work on.
