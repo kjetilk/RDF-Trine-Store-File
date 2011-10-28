@@ -22,7 +22,7 @@ my:project
     :homepage <http://search.cpan.org/dist/RDF-Trine-Store-File/> ;
     :maintainer <http://www.kjetil.kjernsmo.net/foaf#me> ;
     :bug-database <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=RDF-Trine-Store-File> ;
-    :release    my:v_0_01_01, my:v_0_01_02 .
+    :release    my:v_0_01_01, my:v_0_01_02, my:v_0_01_03 .
 
 <http://www.kjetil.kjernsmo.net/foaf#me>
     a           foaf:Person ;
@@ -44,3 +44,8 @@ my:v_0_01_02
     :revision   "0.01_02"^^xsd:string ;
     rdfs:label  "Use ordinary N-Triples."@en .
 
+my:v_0_01_03
+    a           :Version ;
+    dc:issued   "2011-10-28"^^xsd:date ;
+    :revision   "0.01_03"^^xsd:string ;
+    rdfs:label  "Fix locking issue and implement new_with_string"@en .
