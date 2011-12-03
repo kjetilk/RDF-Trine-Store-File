@@ -2,7 +2,7 @@ NAME
     RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 VERSION
-    Version 0.01_03
+    Version 0.02
 
 SYNOPSIS
     To be used as a normal triple store.
@@ -78,6 +78,13 @@ DISCUSSION
     making assumptions about the file that is true in the
     RDF::Trine::Serializer::Ntriples case, but not in the format), but it
     kinda works.
+
+    It is important to note that this module does nothing to prevent you
+    from adding duplicate statements like other stores should do. This is
+    because it would dramatically reduce "add_statement" performance and
+    thus kill the main use case for this module. Perhaps it could be made
+    optional at some point, but for now, just be aware that this may not
+    always return the right counts if two identical statements are inserted.
 
     I've decided to use File::Data to actually do the work with the file.
     Locking and that kind of stuff is done there and is thus Not My Problem.
