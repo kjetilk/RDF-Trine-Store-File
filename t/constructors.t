@@ -8,8 +8,6 @@ use File::Temp qw/tempfile cleanup/;
 
 use_ok('RDF::Trine::Store::File');
 
-my ($fh, $filename) = tempfile(EXLOCK => 0);
-
 my $stmt = RDF::Trine::Statement->new(
 				      RDF::Trine::Node::Resource->new('http://example.org/a'),
 				      RDF::Trine::Node::Resource->new('http://example.org/b'),
@@ -24,17 +22,21 @@ my $stmt = RDF::Trine::Statement->new(
   is($store->size, 1, 'Store has one statement according to size');
   $store->nuke;
 }
+
 {
   note "Testing new_with_string";
-  my $store = RDF::Trine::Store::File->new_with_string($filename);
+  my ($fh, $filename) = tempfile(EXLOCK => 0);
+  my $store = RDF::Trine::Store::File->new_with_string('File;'.$filename);
   isa_ok($store, 'RDF::Trine::Store::File');
   $store->add_statement($stmt);
   is($store->size, 1, 'Store has one statement according to size');
   $store->nuke;
 }
+
 {
   note "Testing new_with_config";
-  my $store = RDF::Trine::Store::File->new_with_config({ file => $filename});
+  my ($fh, $filename) = tempfile(EXLOCK => 0);
+  my $store = RDF::Trine::Store::File->new_with_config({ storetype => 'File', file => $filename});
   isa_ok($store, 'RDF::Trine::Store::File');
   $store->add_statement($stmt);
   is($store->size, 1, 'Store has one statement according to size');
