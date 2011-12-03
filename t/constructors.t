@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use Test::More;
+use Test::More tests => 7;
 use Test::RDF;
 use File::Util;
 use RDF::Trine;
@@ -42,5 +42,6 @@ my $stmt = RDF::Trine::Statement->new(
   is($store->size, 1, 'Store has one statement according to size');
   $store->nuke;
 }
+
 
 done_testing;

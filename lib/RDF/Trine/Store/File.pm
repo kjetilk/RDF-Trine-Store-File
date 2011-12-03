@@ -67,11 +67,29 @@ sub new {
   return $self;
 }
 
+=head2 new_with_string('File;'.$filename)
+
+A constructor, takes a string config as parameter. If the file doesn't
+exist, it will be created. The string will typically begin with C<File;>, e.g.
+
+  my $store = RDF::Trine::Store::File->new_with_string('File;/path/to/file.nt');
+
+=cut
 
 sub _new_with_string {
   my ($class, $filename) = @_;
   return $class->new($filename);
 }
+
+=head2 new_with_config({ storetype => 'File', file => $filename});
+
+A constructor, takes a hashref config as parameter. If the file doesn't
+exist, it will be created. It needs to have a C<storetype> key with C<File> as the value, e.g.
+
+  my $store = RDF::Trine::Store::File->new_with_config({ storetype => 'File', file => $filename});
+
+
+=cut
 
 sub _new_with_config {
   my $class = shift;
@@ -307,8 +325,6 @@ do before it is ready for general use:
 =over
 
 =item * Use the Test::RDF::Trine::Store test suite (without it, this module is arguably not well tested).
-
-=item * Support more constructors (e.g. C<new_with_config>)
 
 =item * Support bulk operations (somewhat less important)
 
