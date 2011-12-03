@@ -230,7 +230,9 @@ Permanently removes the store file and its data.
 =cut
 
 sub nuke {
-  unlink $_[0]->{file};
+  my $self = shift;
+  unlink $self->{file};
+  return $self;
 }
 
 # Private method to create a regexp to be used in all kind of searching
