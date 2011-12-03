@@ -69,11 +69,15 @@ sub new {
 
 
 sub _new_with_string {
-  my $class = shift;
-  return $class->new(shift);
+  my ($class, $filename) = @_;
+  return $class->new($filename);
 }
 
-
+sub _new_with_config {
+  my $class = shift;
+  my $config = shift;
+  return $class->new($config->{file});
+}
 
 =head2 temporary_store
 
