@@ -312,7 +312,8 @@ because it would dramatically reduce C<add_statement> performance and
 thus kill the main use case for this module. Perhaps it could be made
 optional at some point, but for now, just be aware that this may not
 always return the right counts if two identical statements are
-inserted.
+inserted and possibly produce unexpected results if you against the
+advice above should attempt to use this a store for SPARQL.
 
 
 I've decided to use L<File::Data> to actually do the work with the
