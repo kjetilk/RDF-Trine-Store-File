@@ -275,6 +275,7 @@ sub _search_regexp {
   $triple_resources =~ s/\.\s*$/\\./;
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
+  $triple_resources =~ s/\^/\\^/g;
   my $out = '(' . $triple_resources . '\n)';
   $self->{log}->debug("Search regexp: $out");
   return $out;
