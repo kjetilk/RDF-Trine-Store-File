@@ -185,7 +185,9 @@ sub remove_statement {
   $mm->add_statement($st);
   $self->{log}->debug("Attempting removal of statement");
   my $fd = File::Data->new($self->{file});
-  $fd->REPLACE($self->{nser}->serialize_model_to_string($mm), '');
+  my $triple = $self->{nser}->serialize_model_to_string($mm);
+  $triple =~ s/\^/\\^/g;
+  $fd->REPLACE($triple, '');
   return;
 }
 
