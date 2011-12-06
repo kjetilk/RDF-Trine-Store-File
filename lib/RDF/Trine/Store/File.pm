@@ -323,14 +323,14 @@ place to go and fix it.
 
 =head1 TODO
 
-This is alpha-quality software and there are some important things to
-do before it is ready for general use:
+This is beta-quality software but it has a pretty comprehensive test
+suite. These are some things that could be done:
 
 =over
 
-=item * Use the Test::RDF::Trine::Store test suite (without it, this module is arguably not well tested).
-
 =item * Support bulk operations (somewhat less important)
+
+=item * Find a way to do duplicate checking efficiently
 
 =back
 
