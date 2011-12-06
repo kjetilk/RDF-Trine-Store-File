@@ -267,6 +267,7 @@ sub _search_regexp {
   my @stmt;
   foreach my $term (@_[0..2]) { # Create an array of RDF terms for later replacing for variables, discard context
     my $outterm = $term || RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i");
+    $outterm = RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i") if ($outterm->isa('RDF::Trine::Node::Variable'));
     push(@stmt, $outterm);
     $i++;
   }
