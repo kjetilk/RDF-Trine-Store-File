@@ -1,4 +1,4 @@
-use Test::More skip_all => 'Test::RDF::Trine::Store isnt ready for triples only';
+use Test::More;# skip_all => 'Test::RDF::Trine::Store isnt ready for triples only';
 
 use Test::RDF::Trine::Store qw(all_store_tests number_of_tests);
 
