@@ -2,7 +2,7 @@ NAME
     RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 VERSION
-    Version 0.02
+    Version 0.03_1
 
 SYNOPSIS
     To be used as a normal triple store.
@@ -19,6 +19,20 @@ METHODS
   new($filename)
     A constructor, takes a filename as parameter. If the file doesn't exist,
     it will be created.
+
+  new_with_string('File;'.$filename)
+    A constructor, takes a string config as parameter. If the file doesn't
+    exist, it will be created. The string will typically begin with "File;",
+    e.g.
+
+      my $store = RDF::Trine::Store::File->new_with_string('File;/path/to/file.nt');
+
+  new_with_config({ storetype => 'File', file => $filename});
+    A constructor, takes a hashref config as parameter. If the file doesn't
+    exist, it will be created. It needs to have a "storetype" key with
+    "File" as the value, e.g.
+
+      my $store = RDF::Trine::Store::File->new_with_config({ storetype => 'File', file => $filename});
 
   temporary_store
     Constructor that creates a temporary file to work on.
@@ -84,7 +98,9 @@ DISCUSSION
     because it would dramatically reduce "add_statement" performance and
     thus kill the main use case for this module. Perhaps it could be made
     optional at some point, but for now, just be aware that this may not
-    always return the right counts if two identical statements are inserted.
+    always return the right counts if two identical statements are inserted
+    and possibly produce unexpected results if you against the advice above
+    should attempt to use this a store for SPARQL.
 
     I've decided to use File::Data to actually do the work with the file.
     Locking and that kind of stuff is done there and is thus Not My Problem.
@@ -92,15 +108,12 @@ DISCUSSION
     fix it.
 
 TODO
-    This is alpha-quality software and there are some important things to do
-    before it is ready for general use:
-
-    *   Use the Test::RDF::Trine::Store test suite (without it, this module
-        is arguably not well tested).
-
-    *   Support more constructors (e.g. "new_with_config")
+    This is beta-quality software but it has a pretty comprehensive test
+    suite. These are some things that could be done:
 
     *   Support bulk operations (somewhat less important)
+
+    *   Find a way to do duplicate checking efficiently
 
 AUTHOR
     Kjetil Kjernsmo, "<kjetilk at cpan.org>"
