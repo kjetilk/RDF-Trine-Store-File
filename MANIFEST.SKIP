@@ -1,5 +1,4 @@
 #defaults
-t/store-file.t
 ^Makefile(.old)?$
 ^blib/
 ^blibdirs$
