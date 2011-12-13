@@ -10,6 +10,8 @@ test_requires 'Test::More';
 test_requires 'RDF::Trine' => '0.136_01';
 test_requires 'Test::RDF' => 0.24;
 
+build_requires 'URI::Escape';
+
 requires 'RDF::Trine';
 requires 'File::Temp';
 requires 'File::Util';
