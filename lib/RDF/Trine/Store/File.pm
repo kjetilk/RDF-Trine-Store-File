@@ -60,7 +60,7 @@ sub new {
   my $self  = bless(
 		    {
 		     file => $file,
-		     fu   => $fu,
+		     fu	  => $fu,
 		     nser => RDF::Trine::Serializer::NTriples->new,
 		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
 		    }, $class);
@@ -187,6 +187,7 @@ sub remove_statement {
   my $fd = File::Data->new($self->{file});
   my $triple = $self->{nser}->serialize_model_to_string($mm);
   $triple =~ s/\^/\\^/g;
+  $triple =~ s/\\u/\\\\u/g;
   $fd->REPLACE($triple, '');
   return;
 }
@@ -279,6 +280,7 @@ sub _search_regexp {
   $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
   $triple_resources =~ s/\^/\\^/g;
+  $triple_resources =~ s/\\u/\\\\u/g;
   my $out = '(' . $triple_resources . '\n)';
   $self->{log}->debug("Search regexp: $out");
   return $out;
