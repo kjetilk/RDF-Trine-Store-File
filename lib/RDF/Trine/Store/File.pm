@@ -260,6 +260,20 @@ sub nuke {
   return $self;
 }
 
+
+=head2 touch
+
+Touch the file thus updating its timestamp.
+
+=cut
+
+
+sub touch {
+	my $self = shift;
+	$self->{fu}->touch($self->{file});
+}
+
+
 # Private method to create a regexp to be used in all kind of searching
 
 sub _search_regexp {
