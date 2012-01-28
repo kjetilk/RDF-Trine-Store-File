@@ -388,7 +388,7 @@ L<http://search.cpan.org/dist/RDF-Trine-Store-File/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Kjetil Kjernsmo.
+Copyright 2011-2012 Kjetil Kjernsmo.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
