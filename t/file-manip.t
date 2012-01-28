@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
+use strict;
 use Test::More;
 use Test::RDF;
-use File::Util;
 use RDF::Trine;
 use File::Temp qw/tempfile cleanup/;
 
@@ -31,10 +31,16 @@ like($first_etag, qr/\w{32}/, 'Etag is 32 chars long, only hex');
 note "Sleep one second to ensure new etag";
 sleep 1;
 
+close $fh;
+
 my($f) = File::Util->new();
 
 {
-  my($content) = $f->load_file($filename);
+	local $/ = undef;
+	open my ($FH), $filename;
+	my $content  = <$FH>;
+	close $FH;
+
 
   is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
@@ -78,7 +84,11 @@ like($second_etag, qr/\w{32}/, 'Etag is 32 chars long, only hex');
 isnt($first_etag, $second_etag, 'Etags differ');
 
 {
-  my($content) = $f->load_file($filename);
+	local $/ = undef;
+	open my ($FH), $filename;
+	my $content  = <$FH>;
+	close $FH;
+
   is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
 
 #  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
