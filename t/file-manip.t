@@ -33,9 +33,9 @@ sleep 1;
 
 close $fh;
 
-my($f) = File::Util->new();
 
 {
+# Now, we open the file ourselves in addition to the module
 	local $/ = undef;
 	open my ($FH), $filename;
 	my $content  = <$FH>;
@@ -114,6 +114,8 @@ is($store->size, 1, 'Store has one statement after match-remove');
 $store->nuke;
 
 ok(! -e $filename, 'File is gone');
+sleep(1); # to allow the FH from the previous ok() to be flushed
+
 
 {
   my $store2 = RDF::Trine::Store::File->new_with_string('File;' . $filename);
