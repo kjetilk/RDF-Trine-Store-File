@@ -292,7 +292,7 @@ This module is intended mostly as a simple backend to dump data to a
 file and do as little as possible in memory. Thus, it is mostly
 suitable in cases where a lot of data is written to file. It should be
 possible to use it as a SPARQL store with L<RDF::Query>, but the
-performance is likely to be somewhere between terrible and abyssmal,
+performance is likely to be somewhere between terrible and abysmal,
 so don't do that unless you are prepared to be waiting around.
 
 On the good side, adding statements should be pretty fast, as it just
