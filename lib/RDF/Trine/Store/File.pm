@@ -131,7 +131,7 @@ sub add_statement {
 
 =head2 get_statements($subject, $predicate, $object)
 
-Returns a stream object of all statements matching the specified subject,
+Returns a iterator object of all statements matching the specified subject,
 predicate and objects. Any of the arguments may be undef to match any value.
 
 =cut
