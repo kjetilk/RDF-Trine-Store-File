@@ -142,7 +142,7 @@ sub get_statements {
   my $parser = RDF::Trine::Parser->new( 'ntriples' );  
   my $mm = RDF::Trine::Model->temporary_model;
   $parser->parse_into_model( '', join('', @lines), $mm );
-  return $mm->get_statements(undef, undef, undef, undef);
+  return $mm->as_stream;
 }
 
 =head2 count_statements($subject, $predicate, $object)
