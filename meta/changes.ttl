@@ -27,11 +27,11 @@ my:v_0_1
       	[ rdfs:label "Discard context."@en ; a dcs:Bugfix ] ,
       	[ rdfs:label "Nuke should return self."@en ; a dcs:Bugfix ] ,
        	[ rdfs:label "Escape unicode escape sequences in NTriples."@en ; a dcs:Bugfix ] ,
-        [ rdfs:label "Now passing the new Test::RDF::Trine::Store test suite."@en ; a dcs:Addition ]         
-	[ rdfs:label "Add a build_requires on URI::Escape."@en ; a dcs:Addition ] 
-	[ rdfs:label "Support variables in statements."@en ; a dcs:Addition ] 
-	[ rdfs:label "Add more constructors and tests for them."@en ; a dcs:Addition ] 
-  	[ rdfs:label "Note that duplicate triples aren't prevented."@en ; a dcs:Addition ] 
-        [ rdfs:label "Many minor documentation fixes"@en ; a dcs:Update ] ,
+        [ rdfs:label "Now passing the new Test::RDF::Trine::Store test suite."@en ; a dcs:Addition ] ,        
+	[ rdfs:label "Add a build_requires on URI::Escape."@en ; a dcs:Addition ] ,
+	[ rdfs:label "Support variables in statements."@en ; a dcs:Addition ] ,
+	[ rdfs:label "Add more constructors and tests for them."@en ; a dcs:Addition ] ,
+  	[ rdfs:label "Note that duplicate triples aren't prevented."@en ; a dcs:Addition ] , 
+        [ rdfs:label "Many minor documentation fixes"@en ; a dcs:Update ] 
     ] .
 
