@@ -1,0 +1,19 @@
+# This file provides instructions for packaging.
+
+@prefix : <http://ontologi.es/doap-deps#> .
+@base <http://purl.org/NET/cpan-uri/dist/URI-NamespaceMap/> .
+
+<project>
+    :test-requirement       [ :on "Test::More"^^:CpanId ];
+    :test-requirement       [ :on "Test::RDF::Trine::Store 0.137"^^:CpanId ];
+    :test-requirement       [ :on "Test::RDF 0.24"^^:CpanId ];
+    :test-requirement       [ :on "URI::Escape"^^:CpanId ];
+    :runtime-requirement         [ :on "RDF::Trine 1.011"^^:CpanId ];
+    :runtime-requirement         [ :on "File::Temp"^^:CpanId ];
+    :runtime-requirement         [ :on "File::Util"^^:CpanId ];
+    :runtime-requirement         [ :on "File::Data"^^:CpanId ];
+    :runtime-requirement         [ :on "Scalar::Util"^^:CpanId ];
+    :runtime-requirement         [ :on "Carp"^^:CpanId ];
+    :runtime-requirement         [ :on "Log::Log4perl"^^:CpanId ];
+    :runtime-requirement         [ :on "Digest::MD5"^^:CpanId ]. 
+
