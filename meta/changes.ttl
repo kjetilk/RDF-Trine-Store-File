@@ -8,7 +8,13 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 
-my:project   :release    my:v_0_1, my:v_0_02 .
+my:project   :release   my:v_0_11_1, my:v_0_1, my:v_0_02 .
+
+my:v_0_11_1
+    a           :Version ;
+    dc:issued   "2014-11-18"^^xsd:date ;
+    :revision   "0.11_1"^^xsd:string ;
+    rdfs:label  "Beta"@en .
 
 my:v_0_02
     a           :Version ;
