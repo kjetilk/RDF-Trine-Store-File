@@ -12,7 +12,7 @@ test_requires 'Test::RDF' => 0.24;
 
 build_requires 'URI::Escape';
 
-requires 'RDF::Trine';
+requires 'RDF::Trine' => 1.011;
 requires 'File::Temp';
 requires 'File::Util';
 requires 'File::Data';
