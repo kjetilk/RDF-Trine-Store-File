@@ -214,7 +214,8 @@ sub remove_statements {
 
 =head2 get_contexts
 
-Contexts are not supported for this store.
+Will return an iterator with contexts (aka graph names) if the file
+contains quads, an empty iterator if not.
 
 =cut
 
@@ -224,6 +225,11 @@ sub get_contexts {
   $self->{log}->debug("Contexts not supported for the File store");
   return RDF::Trine::Iterator->new([]);
 }
+
+sub _is_quad_store {
+  my $self = shift;
+  $self->{fu}->open_handle(  => 'read' );line_count($self->{file});
+
 
 =head2 size
 
