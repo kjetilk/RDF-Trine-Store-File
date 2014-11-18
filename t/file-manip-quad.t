@@ -17,12 +17,13 @@ ok($store, 'Store object OK');
 $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
 						 RDF::Trine::Node::Resource->new('http://example.org/b'),
-						 RDF::Trine::Node::Resource->new('http://example.org/c')
+						 RDF::Trine::Node::Resource->new('http://example.org/c'),
+						 RDF::Trine::Node::Resource->new('http://example.org/g')
 						));
 
 is($store->size, 1, 'Store has one statement according to size');
 
-is($store->count_statements(undef, undef, undef), 1, 'Store has one statement according to count');
+is($store->count_statements(undef, undef, undef, undef), 1, 'Store has one statement according to count');
 
 my $first_etag = $store->etag;
 
@@ -50,18 +51,21 @@ close $fh;
 $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
 						 RDF::Trine::Node::Resource->new('http://example.org/d'),
-						 RDF::Trine::Node::Resource->new('http://example.org/e')
+						 RDF::Trine::Node::Resource->new('http://example.org/e'),
+						 RDF::Trine::Node::Resource->new('http://example.org/g')
 						));
 
 $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
 						 RDF::Trine::Node::Resource->new('http://example.org/d'),
-						 RDF::Trine::Node::Literal->new('Dahut')
+						 RDF::Trine::Node::Literal->new('Dahut'),
+						 RDF::Trine::Node::Resource->new('http://example.org/f')
 						));
 $store->add_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
 						 RDF::Trine::Node::Resource->new('http://example.org/d'),
-						 RDF::Trine::Node::Literal->new('Dahut', 'en')
+						 RDF::Trine::Node::Literal->new('Dahut', 'en'),
+						 RDF::Trine::Node::Resource->new('http://example.org/g')
 						));
 
 is($store->size, 4, 'Store has four statements');
@@ -69,12 +73,20 @@ is($store->size, 4, 'Store has four statements');
 is($store->count_statements(
 			    RDF::Trine::Node::Resource->new('http://example.org/a'),
 			    RDF::Trine::Node::Resource->new('http://example.org/d'),
-			    undef), 3, 'Three statements with object unbound');
+			    undef, undef), 3, 'Three statements with object unbound');
+
+is($store->count_statements(
+			    RDF::Trine::Node::Resource->new('http://example.org/a'),
+			    RDF::Trine::Node::Resource->new('http://example.org/d'),
+			    undef, 
+				 RDF::Trine::Node::Resource->new('http://example.org/g'),
+					), 2, 'Two statements with object unbound');
 
 is($store->count_statements(
 			    undef,
 			    RDF::Trine::Node::Resource->new('http://example.org/d'),
-			    RDF::Trine::Node::Literal->new('Dahut', 'en')),
+			    RDF::Trine::Node::Literal->new('Dahut', 'en'),
+				 undef),
    1, '1 statement with object bound to lang literal');
 
 my $second_etag = $store->etag;
@@ -97,17 +109,27 @@ isnt($first_etag, $second_etag, 'Etags differ');
 $store->remove_statement(RDF::Trine::Statement->new(
 						 RDF::Trine::Node::Resource->new('http://example.org/a'),
 						 RDF::Trine::Node::Resource->new('http://example.org/d'),
-						 RDF::Trine::Node::Resource->new('http://example.org/e')
+						 RDF::Trine::Node::Resource->new('http://example.org/e'),
+						 RDF::Trine::Node::Resource->new('http://example.org/g')
 						));
 
 is($store->size, 3, 'Store has 3 statements after single remove');
 
-is($store->size, $store->count_statements(undef, undef, undef), 'count and size are equal');
+is($store->size, $store->count_statements(undef, undef, undef, undef), 'count and size are equal');
 
 $store->remove_statements(
 			  RDF::Trine::Node::Resource->new('http://example.org/a'),
 			  RDF::Trine::Node::Resource->new('http://example.org/d'),
-			  undef);
+			  undef,
+			  RDF::Trine::Node::Resource->new('http://example.org/f')
+			 );
+
+is($store->size, 2, 'Store has one statement after match-remove');
+
+$store->remove_statements(
+			  RDF::Trine::Node::Resource->new('http://example.org/a'),
+			  RDF::Trine::Node::Resource->new('http://example.org/d'),
+			  undef, undef);
 
 is($store->size, 1, 'Store has one statement after match-remove');
 
@@ -125,7 +147,8 @@ sleep(1); # to allow the FH from the previous ok() to be flushed
   $store2->add_statement(RDF::Trine::Statement->new(
 						    RDF::Trine::Node::Resource->new('http://example.org/a'),
 						    RDF::Trine::Node::Resource->new('http://example.org/b'),
-						    RDF::Trine::Node::Resource->new('http://example.org/c')
+						    RDF::Trine::Node::Resource->new('http://example.org/c'),
+							 RDF::Trine::Node::Resource->new('http://example.org/h')
 						   ));
 
   is($store2->size, 1, 'Store with string config has one statement according to size');
