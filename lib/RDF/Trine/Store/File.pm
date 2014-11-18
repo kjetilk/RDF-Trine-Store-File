@@ -228,7 +228,10 @@ sub get_contexts {
 
 sub _is_quad_store {
   my $self = shift;
-  $self->{fu}->open_handle(  => 'read' );line_count($self->{file});
+  my $fh = $self->{fu}->open_handle( $self->{file} => 'read' );
+  my $line = <$fh>;
+  return $line =~ m/^<.+?> <.+?> .+? <.+?> \.\n$/;
+}
 
 
 =head2 size
