@@ -19,8 +19,8 @@ my:project
     a           :Project ;
     :name       "RDF-Trine-Store-File" ;
     :shortdesc  "Simple file triple and quad store based on NTriple files."@en ;
-    :created    "2009-04-23"^^xsd:date ;
-    :programming-language "Perl" ;
+    :programming-language "Perl" ;    
+    :created    "2011-07-21"^^xsd:date ;
     :maintainer <http://www.kjetil.kjernsmo.net/foaf#me> ;
     :homepage       <https://metacpan.org/release/RDF-Trine-Store-File> ;
     :download-page  <https://metacpan.org/release/RDF-Trine-Store-File> ;
