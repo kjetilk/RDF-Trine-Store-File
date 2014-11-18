@@ -220,7 +220,9 @@ Contexts are not supported for this store.
 
 
 sub get_contexts {
-  croak "Contexts not supported for the File store";
+  my $self = shift;
+  $self->{log}->debug("Contexts not supported for the File store");
+  return RDF::Trine::Iterator->new([]);
 }
 
 =head2 size
