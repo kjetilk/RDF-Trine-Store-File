@@ -146,7 +146,7 @@ Will return an iterator with contexts (aka graph names).
 sub get_contexts {
   my $self = shift;
   my $fd = File::Data->new($self->{file});
-  my @contexts = $fd->SEARCH('^<.+?> <.+?> .+? <.+?> \.\n$');
+  my @contexts = $fd->SEARCH('^(?:<.+?>|_\:\\w+?) <.+?> .+? <.+?> \.\n$');
   croak 'Could not find any quads in ' . $self->{file} if (scalar @contexts == 0);
   return RDF::Trine::Iterator->new([uniq(@contexts)]);
 }
@@ -186,7 +186,8 @@ sub _search_regexp {
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2|4)/.*?/g;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-(1|4)>/(?:<.+?>|_\:\\w+?)/g;
+  $triple_resources =~ s/urn:rdf-trine-store-file-2/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
   $triple_resources =~ s/\^/\\^/g;
   $triple_resources =~ s/\\u/\\\\u/g;
