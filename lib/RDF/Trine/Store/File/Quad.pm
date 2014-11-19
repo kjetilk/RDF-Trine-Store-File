@@ -201,16 +201,6 @@ sub _search_regexp {
 
 Kjetil Kjernsmo, C<< <kjetilk at cpan.org> >>
 
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc RDF::Trine::Store::File::Quad
-
-The perlrdf mailing list is the right place to seek help and discuss this module:
-
-L<http://lists.perlrdf.org/listinfo/dev>
-
 =back
 
 
