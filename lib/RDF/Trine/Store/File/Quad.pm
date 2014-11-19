@@ -197,19 +197,6 @@ sub _search_regexp {
 }
 
 
-=head1 TODO
-
-This is beta-quality software but it has a pretty comprehensive test
-suite. These are some things that could be done:
-
-=over
-
-=item * Support bulk operations (somewhat less important)
-
-=item * Find a way to do duplicate checking efficiently
-
-=back
-
 =head1 AUTHOR
 
 Kjetil Kjernsmo, C<< <kjetilk at cpan.org> >>
