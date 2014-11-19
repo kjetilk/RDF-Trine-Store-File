@@ -61,14 +61,14 @@ sub new {
   return $self;
 }
 
-=head2 new_with_string('File;'.$filename)
+=head2 new_with_string('File::Quad;'.$filename)
 
 A constructor, takes a string config as parameter. If the file doesn't
 exist, it will be created. The string will typically begin with C<File::Quad;>, e.g.
 
   my $store = RDF::Trine::Store::File::Quad->new_with_string('File::Quad;/path/to/file.nt');
 
-=head2 new_with_config({ storetype => 'File', file => $filename});
+=head2 new_with_config({ storetype => 'File::Quad', file => $filename});
 
 A constructor, takes a hashref config as parameter. If the file doesn't
 exist, it will be created. It needs to have a C<storetype> key with C<File::Quad> as the value, e.g.
