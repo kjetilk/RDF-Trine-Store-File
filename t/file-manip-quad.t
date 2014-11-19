@@ -26,11 +26,6 @@ $store->add_statement(statement(
 
 is($store->size, 1, 'Store has one statement according to size');
 
-ok($store->_is_quad_store, 'This is a quad store');
-
-sleep 10;
-die "argh";
-
 is($store->count_statements(undef, undef, undef, undef), 1, 'Store has one statement according to count');
 
 my $first_etag = $store->etag;
@@ -51,9 +46,9 @@ close $fh;
 	close $FH;
 
 
-  is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
+  is_valid_rdf($content, 'nquads', 'Content is valid N-Quads');
 
-  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'turtle', 'Content is correct');
+  is_rdf($content, 'nquads', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'turtle', 'Content is correct');
 }
 
 $store->add_statement(statement(
@@ -77,10 +72,6 @@ $store->add_statement(statement(
 						));
 
 is($store->size, 4, 'Store has four statements');
-
-sleep 10;
-
-ok($store->_is_quad_store, 'This is a quad store');
 
 is($store->count_statements(
 			    iri('http://example.org/a'),
@@ -113,9 +104,9 @@ isnt($first_etag, $second_etag, 'Etags differ');
 	my $content  = <$FH>;
 	close $FH;
 
-  is_valid_rdf($content, 'ntriples', 'Content is valid N-Triples');
+  is_valid_rdf($content, 'nquads', 'Content is valid N-Quads');
 
-#  is_rdf($content, 'ntriples', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'ntriples', 'Content is correct');
+#  is_rdf($content, 'nquads', '<http://example.org/a> <http://example.org/b> <http://example.org/c> .', 'nquads', 'Content is correct');
 }
 
 $store->remove_statement(statement(
