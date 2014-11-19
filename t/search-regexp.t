@@ -16,7 +16,7 @@ isa_ok($store, 'RDF::Trine::Store::File');
 				     RDF::Trine::Node::Resource->new('http://example.org/b'),
 				     RDF::Trine::Node::Resource->new('http://example.org/c')
 				    );
-  is($regex, '(<.*?> <http://example.org/b> <http://example.org/c> \.\n)', 'Subject variable matches');
+  is($regex, '((?:<.*?>|_:\w+?) <http://example.org/b> <http://example.org/c> \.\n)', 'Subject variable matches');
 }
 
 {
@@ -24,7 +24,7 @@ isa_ok($store, 'RDF::Trine::Store::File');
 				     RDF::Trine::Node::Resource->new('http://example.org/d'),
 				     undef
 				    );
-  is($regex, '(<http://example.org/a> <http://example.org/d> .* \.\n)', 'object variable matches');
+  is($regex, '(<http://example.org/a> <http://example.org/d> .+ \.\n)', 'object variable matches');
 }
 
 {
@@ -32,7 +32,7 @@ isa_ok($store, 'RDF::Trine::Store::File');
 				     undef,
 				     undef
 				    );
-  is($regex, '(<http://example.org/a> <.*?> .* \.\n)', 'predicate and object variable matches');
+  is($regex, '(<http://example.org/a> <.*?> .+ \.\n)', 'predicate and object variable matches');
 }
 
 $store->nuke;
