@@ -86,10 +86,8 @@ Adds the specified C<$statement> to the underlying model.
 =cut
 
 sub add_statement {
-  my ($self, $st) = @_;
-  unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
-    throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to add_statement";
-  }
+  my $self = shift;
+  my $st = _check_arguments(@_);
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement($st);
   $self->{log}->debug("Attempting addition of statement");
@@ -116,7 +114,8 @@ Removes the specified C<$statement> from the underlying model.
 =cut
 
 sub remove_statement {
-  my ($self, $st) = @_;
+  my $self = shift;
+  my $st = _check_arguments(@_);
   unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
     throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to remove_statement";
   }
@@ -194,6 +193,27 @@ sub _search_regexp {
   my $out = '(' . $triple_resources . '\n)';
   $self->{log}->debug("Search regexp: $out");
   return $out;
+}
+
+# Ensures that we get a quad back
+
+sub _check_arguments {
+	my $st = shift;
+	my $context = shift;
+	if (blessed($st) && $st->isa( 'RDF::Trine::Statement::Quad' )) {
+		if (blessed($context)) {
+			throw RDF::Trine::Error::MethodInvocationError -text => "add_statement cannot be called with both a quad and a context";
+		}
+	} else {
+		my @nodes	= $st->nodes;
+		if (blessed($context)) {
+			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $context );
+		} else {
+			my $nil	= RDF::Trine::Node::Nil->new();
+			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $nil );
+		}
+	}
+	return $st;
 }
 
 
