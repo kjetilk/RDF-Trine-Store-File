@@ -22,6 +22,8 @@ $store->add_statement(RDF::Trine::Statement->new(
 
 is($store->size, 1, 'Store has one statement according to size');
 
+ok(!$store->_is_quad_store, 'This is not a quad store');
+
 is($store->count_statements(undef, undef, undef), 1, 'Store has one statement according to count');
 
 my $first_etag = $store->etag;
@@ -65,6 +67,8 @@ $store->add_statement(RDF::Trine::Statement->new(
 						));
 
 is($store->size, 4, 'Store has four statements');
+
+ok(!$store->_is_quad_store, 'This is not a quad store');
 
 is($store->count_statements(
 			    RDF::Trine::Node::Resource->new('http://example.org/a'),

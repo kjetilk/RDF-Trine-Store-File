@@ -124,6 +124,7 @@ sub add_statement {
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement($st);
   $self->{log}->debug("Attempting addition of statement");
+  $self->{log}->trace("with terms " . $st->as_string);
   my $fd = File::Data->new($self->{file});
   $fd->append($self->{nser}->serialize_model_to_string($mm));
   return;

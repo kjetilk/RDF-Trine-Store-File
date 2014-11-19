@@ -5,6 +5,9 @@ use Test::More;
 use Test::RDF;
 use RDF::Trine qw(statement iri literal);
 use File::Temp qw/tempfile cleanup/;
+use Log::Log4perl qw(:easy);
+
+Log::Log4perl->easy_init( { level   =>  $TRACE} ) if $ENV{TEST_VERBOSE};
 
 use_ok('RDF::Trine::Store::File');
 
@@ -22,6 +25,11 @@ $store->add_statement(statement(
 						));
 
 is($store->size, 1, 'Store has one statement according to size');
+
+ok($store->_is_quad_store, 'This is a quad store');
+
+sleep 10;
+die "argh";
 
 is($store->count_statements(undef, undef, undef, undef), 1, 'Store has one statement according to count');
 
@@ -69,6 +77,10 @@ $store->add_statement(statement(
 						));
 
 is($store->size, 4, 'Store has four statements');
+
+sleep 10;
+
+ok($store->_is_quad_store, 'This is a quad store');
 
 is($store->count_statements(
 			    iri('http://example.org/a'),
