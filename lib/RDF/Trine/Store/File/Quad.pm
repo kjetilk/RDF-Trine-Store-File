@@ -3,7 +3,7 @@ package RDF::Trine::Store::File;
 use 5.006;
 use strict;
 use warnings;
-use base qw(RDF::Trine::Store);
+use base qw(RDF::Trine::Store::File);
 use RDF::Trine::Error qw(:try);
 use RDF::Trine::Serializer::NQuads;
 use RDF::Trine::Parser;
@@ -14,6 +14,7 @@ use File::Temp qw/tempfile/;
 use Carp qw/croak/;
 use Log::Log4perl;
 use Digest::MD5 ('md5_hex');
+use List::MoreUtils qw(uniq);
 
 
 =head1 NAME
@@ -145,8 +146,10 @@ Will return an iterator with contexts (aka graph names).
 
 sub get_contexts {
   my $self = shift;
-  $self->{log}->debug("Contexts not supported for the File store");
-  return RDF::Trine::Iterator->new([]);
+  my $fd = File::Data->new($self->{file});
+  my @contexts = $fd->SEARCH('^<.+?> <.+?> .+? <.+?> \.\n$');
+  croak 'Could not find any quads in ' . $self->{file} if (scalar @contexts == 0);
+  return RDF::Trine::Iterator->new([uniq(@contexts)]);
 }
 
 

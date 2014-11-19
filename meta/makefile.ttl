@@ -11,6 +11,7 @@
     :runtime-requirement         [ :on "RDF::Trine 1.011"^^:CpanId ];
     :runtime-requirement         [ :on "File::Temp"^^:CpanId ];
     :runtime-requirement         [ :on "File::Util"^^:CpanId ];
+    :runtime-requirement         [ :on "List::MoreUtils"^^:CpanId ];
     :runtime-requirement         [ :on "File::Data"^^:CpanId ];
     :runtime-requirement         [ :on "Scalar::Util"^^:CpanId ];
     :runtime-requirement         [ :on "Carp"^^:CpanId ];
