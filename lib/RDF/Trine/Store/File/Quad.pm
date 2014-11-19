@@ -209,7 +209,7 @@ sub _check_arguments {
 		if (blessed($context)) {
 			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $context );
 		} else {
-			my $nil	= RDF::Trine::Node::Nil->new();
+			my $nil	= RDF::Trine::Node::Resource->new('urn:nil');
 			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $nil );
 		}
 	}
