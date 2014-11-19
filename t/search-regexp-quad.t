@@ -6,11 +6,11 @@ use RDF::Trine qw(iri);
 
 Log::Log4perl->easy_init( { level   =>  $TRACE} ) if $ENV{TEST_VERBOSE};
 
-use_ok('RDF::Trine::Store::File');
+use_ok('RDF::Trine::Store::File::Quad');
 
-my $store = RDF::Trine::Store::File->temporary_store;
+my $store = RDF::Trine::Store::File::Quad->temporary_store;
 
-isa_ok($store, 'RDF::Trine::Store::File');
+isa_ok($store, 'RDF::Trine::Store::File::Quad');
 
 {
   my $regex = $store->_search_regexp(undef,
