@@ -1,4 +1,4 @@
-package RDF::Trine::Store::File;
+package RDF::Trine::Store::File::Quad;
 
 use 5.006;
 use strict;
