@@ -56,7 +56,7 @@ sub new {
 		     fu	  => $fu,
 			  parser => 'nquads',
 		     nser => RDF::Trine::Serializer::NQuads->new,
-		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
+		     log  => Log::Log4perl->get_logger("rdf.trine.store.file.quad")
 		    }, $class);
   return $self;
 }
@@ -64,16 +64,16 @@ sub new {
 =head2 new_with_string('File;'.$filename)
 
 A constructor, takes a string config as parameter. If the file doesn't
-exist, it will be created. The string will typically begin with C<File;>, e.g.
+exist, it will be created. The string will typically begin with C<File::Quad;>, e.g.
 
-  my $store = RDF::Trine::Store::File::Quad->new_with_string('File;/path/to/file.nt');
+  my $store = RDF::Trine::Store::File::Quad->new_with_string('File::Quad;/path/to/file.nt');
 
 =head2 new_with_config({ storetype => 'File', file => $filename});
 
 A constructor, takes a hashref config as parameter. If the file doesn't
-exist, it will be created. It needs to have a C<storetype> key with C<File> as the value, e.g.
+exist, it will be created. It needs to have a C<storetype> key with C<File::Quad> as the value, e.g.
 
-  my $store = RDF::Trine::Store::File::Quad->new_with_config({ storetype => 'File', file => $filename});
+  my $store = RDF::Trine::Store::File::Quad->new_with_config({ storetype => 'File::Quad', file => $filename});
 
 =head2 temporary_store
 
