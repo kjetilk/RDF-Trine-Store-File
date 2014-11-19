@@ -176,18 +176,18 @@ sub _search_regexp {
   my $self = shift;
   my $i = 1;
   my @stmt;
-  foreach my $term (@_[0..2]) { # Create an array of RDF terms for later replacing for variables, discard context
+  foreach my $term (@_[0..3]) { # Create an array of RDF terms for later replacing for variables
     my $outterm = $term || RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i");
     $outterm = RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i") if ($outterm->isa('RDF::Trine::Node::Variable'));
     push(@stmt, $outterm);
     $i++;
   }
   my $mm = RDF::Trine::Model->temporary_model;
-  $mm->add_statement(RDF::Trine::Statement->new(@stmt));
+  $mm->add_statement(RDF::Trine::Statement::Quad->new(@stmt));
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2)/.*?/g;
+  $triple_resources =~ s/urn:rdf-trine-store-file-(1|2|4)/.*?/g;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.*/;
   $triple_resources =~ s/\^/\\^/g;
   $triple_resources =~ s/\\u/\\\\u/g;
