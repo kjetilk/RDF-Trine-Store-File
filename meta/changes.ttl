@@ -12,9 +12,17 @@ my:project   :release   my:v_0_11_1, my:v_0_1, my:v_0_02 .
 
 my:v_0_11_1
     a           :Version ;
-    dc:issued   "2014-11-18"^^xsd:date ;
+    dc:issued   "2014-11-20"^^xsd:date ;
     :revision   "0.11_1"^^xsd:string ;
-    rdfs:label  "Beta"@en .
+    rdfs:label  "Unfinished quad support."@en  ;
+    dcs:changeset [
+      dcs:item
+	[ rdfs:label "Quad support, but not really working."@en ; a dcs:Addition ] ,
+	[ rdfs:label "Clean up documentation" ; a dcs:Change ] ,
+	[ rdfs:label "Migrate to Dist::Inkt for packaging." ; a dcs:Change ] ,
+	[ rdfs:label "Add more RDF data."@en ; a dcs:Addition ] ,
+	[ rdfs:label "get_context shouldn't die."@en ; a dcs:Update ] 
+      ] .
 
 my:v_0_02
     a           :Version ;
