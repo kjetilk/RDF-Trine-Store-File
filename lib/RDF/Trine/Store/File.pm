@@ -61,8 +61,8 @@ sub new {
 		    {
 		     file => $file,
 		     fu	  => $fu,
-			  parser => 'ntriples',
-		     nser => RDF::Trine::Serializer::NTriples->new,
+			  parser => 'nquads',
+		     nser => RDF::Trine::Serializer::NQuads->new,
 		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
 		    }, $class);
   return $self;
@@ -118,10 +118,8 @@ Adds the specified C<$statement> to the underlying model.
 =cut
 
 sub add_statement {
-  my ($self, $st) = @_;
-  unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
-    throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to add_statement";
-  }
+  my $self = shift;
+  my $st = _check_arguments(@_);
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement($st);
   $self->{log}->debug("Attempting addition of statement");
@@ -179,7 +177,8 @@ Removes the specified C<$statement> from the underlying model.
 =cut
 
 sub remove_statement {
-  my ($self, $st) = @_;
+  my $self = shift;
+  my $st = _check_arguments(@_);
   unless (blessed($st) and $st->isa('RDF::Trine::Statement')) {
     throw RDF::Trine::Error::MethodInvocationError -text => "Not a valid statement object passed to remove_statement";
   }
@@ -216,15 +215,18 @@ sub remove_statements {
 
 =head2 get_contexts
 
-Will return an empty iterator as this triple store does not support contexts.
+Returns an iterator with all context (aka graph names) or an empty iterator if it is a pure triple store.
 
 =cut
 
-
 sub get_contexts {
   my $self = shift;
-  $self->{log}->warn("Contexts not supported for the triple File store");
-  return RDF::Trine::Iterator->new([]);
+  my $fd = File::Data->new($self->{file});
+  my @contexts = $fd->SEARCH('^(?:<.*?>|_\:\w+?) <.*?> .+? (?:<.*?>|_\:\w+?) \.\n$'); # TODO: check
+  if (scalar @contexts == 0) {
+	  $self->{log}->info("No quads were found in File store file");
+  }
+  return RDF::Trine::Iterator->new([uniq(@contexts)]);
 }
 
 
@@ -250,7 +252,7 @@ that changes fast.
 
 sub etag {
   my $self = shift;
-  return md5_hex($self->{fu}->last_modified($self->{file}));
+  return md5_hex($self->{fu}->last_modified($self->{file})); # TODO: use b64
 }
 
 =head2 nuke
