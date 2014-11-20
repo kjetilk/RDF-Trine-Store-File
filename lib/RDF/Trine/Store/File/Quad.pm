@@ -173,9 +173,16 @@ Permanently removes the store file and its data.
 
 sub _search_regexp {
   my $self = shift;
+  my @terms = @_;
+#  if (scalar @terms <= 3) { # Then the context is probably unset
+#	  warn "FOOOOOOOO";
+#	  $terms[3] = RDF::Trine::Node::Resource->new('urn:rdf-trine-store-file-nil');
+#  }
+#  warn Data::Dumper::Dumper(\@terms);
+
   my $i = 1;
   my @stmt;
-  foreach my $term (@_[0..3]) { # Create an array of RDF terms for later replacing for variables
+  foreach my $term (@terms[0..3]) { # Create an array of RDF terms for later replacing for variables
     my $outterm = $term || RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i");
     $outterm = RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i") if ($outterm->isa('RDF::Trine::Node::Variable'));
     push(@stmt, $outterm);
@@ -186,9 +193,11 @@ sub _search_regexp {
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-(1|4)>/(?:<.*?>|_\:\\w+?)/g;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-1>/(?:<.*?>|_\:\\w+?)/;
   $triple_resources =~ s/urn:rdf-trine-store-file-2/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.+/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-4>/(?:(?:<.*?>|_\:\\w+?))?/;
+  $triple_resources =~ s/ \\.$/ \?\\./g;
   $triple_resources =~ s/\^/\\^/g;
   $triple_resources =~ s/\\u/\\\\u/g;
   my $out = '(' . $triple_resources . '\n)';
@@ -210,7 +219,8 @@ sub _check_arguments {
 		if (blessed($context)) {
 			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $context );
 		} else {
-			my $nil	= RDF::Trine::Node::Resource->new('urn:nil');
+#			my $nil	= RDF::Trine::Node::Resource->new('urn:rdf-trine-store-file-nil');
+			my $nil	= RDF::Trine::Node::Nil->new;
 			$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $nil );
 		}
 	}

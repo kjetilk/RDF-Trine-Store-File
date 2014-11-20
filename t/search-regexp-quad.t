@@ -18,7 +18,7 @@ isa_ok($store, 'RDF::Trine::Store::File::Quad');
 				     iri('http://example.org/c'),
 				     iri('http://example.org/d')
 				    );
-  is($regex, '((?:<.*?>|_:\w+?) <http://example.org/b> <http://example.org/c> <http://example.org/d> \.\n)', 'Subject variable matches');
+  is($regex, '((?:<.*?>|_:\w+?) <http://example.org/b> <http://example.org/c> <http://example.org/d> ?\.\n)', 'Subject variable matches');
 }
 
 {
@@ -28,7 +28,7 @@ isa_ok($store, 'RDF::Trine::Store::File::Quad');
 												 undef,
 												 iri('http://example.org/c')
 				    );
-  is($regex, '(<http://example.org/a> <http://example.org/d> .+ <http://example.org/c> \.\n)', 'object variable matches');
+  is($regex, '(<http://example.org/a> <http://example.org/d> .+ <http://example.org/c> ?\.\n)', 'object variable matches');
 }
 
 {
@@ -38,7 +38,7 @@ isa_ok($store, 'RDF::Trine::Store::File::Quad');
 												 iri('http://example.org/d'),
 												 undef,
 				    );
-  is($regex, '((?:<.*?>|_:\w+?) <http://example.org/a> <http://example.org/d> (?:<.*?>|_:\w+?) \.\n)', 'subject and graph variable matches');
+  is($regex, '((?:<.*?>|_:\w+?) <http://example.org/a> <http://example.org/d> (?:(?:<.*?>|_:\w+?))? ?\.\n)', 'subject and graph variable matches');
 }
 
 {
@@ -48,7 +48,7 @@ isa_ok($store, 'RDF::Trine::Store::File::Quad');
 												 undef,
 												 undef
 				    );
-  is($regex, '(<http://example.org/a> <.*?> .+ (?:<.*?>|_:\w+?) \.\n)', 'predicate, object and graph variable matches');
+  is($regex, '(<http://example.org/a> <.*?> .+ (?:(?:<.*?>|_:\w+?))? ?\.\n)', 'predicate, object and graph variable matches');
 }
 
 $store->nuke;
