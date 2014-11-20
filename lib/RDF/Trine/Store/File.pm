@@ -271,28 +271,74 @@ sub nuke {
 
 sub _search_regexp {
   my $self = shift;
+  my @nodes = @_;
+  warn Data::Dumper::Dumper(\@nodes);
   my $i = 1;
   my @stmt;
-  foreach my $term (@_[0..2]) { # Create an array of RDF terms for later replacing for variables, discard context
-    my $outterm = $term || RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i");
-    $outterm = RDF::Trine::Node::Resource->new("urn:rdf-trine-store-file-$i") if ($outterm->isa('RDF::Trine::Node::Variable'));
+  foreach my $node (@nodes) { # Create an array of RDF terms for later replacing for variables, discard context
+    my $outterm = $node;
+	 if ($node->is_variable) {
+		 $outterm = RDF::Trine::Node::Resource->new('urn:rdf-trine-store-file-' . $node->name);
+	 }
     push(@stmt, $outterm);
-    $i++;
   }
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement(RDF::Trine::Statement->new(@stmt));
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
+  warn $triple_resources;
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-1>/(?:<.*?>|_\:\\w+?)/;
-  $triple_resources =~ s/urn:rdf-trine-store-file-2/.*?/g;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-3>/.+/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-(?:s|g)>/(?:<.*?>|_\:\\w+?)/;
+  $triple_resources =~ s/urn:rdf-trine-store-file-p/.*?/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-o>/.+/;
   $triple_resources =~ s/\^/\\^/g;
   $triple_resources =~ s/\\u/\\\\u/g;
   my $out = '(' . $triple_resources . '\n)';
   $self->{log}->debug("Search regexp: $out");
   return $out;
 }
+
+# Ensures that we get a quad back
+
+sub _check_arguments {
+	my @param = @_;
+	my $st = $param[0];
+	if (blessed($st)) {
+		if ($st->isa( 'RDF::Trine::Statement::Quad' )) {
+			if (blessed($param[1])) {
+				throw RDF::Trine::Error::MethodInvocationError -text => "Method cannot be called with both a quad and a context";
+			} else { # So, we have a legit quad
+				return $st;
+			}
+		}
+		if ($st->isa( 'RDF::Trine::Statement' )) {
+			my @nodes	= $st->nodes;
+			my $context = $param[1];
+			if (blessed($context)) {
+				$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $context );
+			} else {
+				my $nil	= RDF::Trine::Node::Nil->new;
+				$st	= RDF::Trine::Statement::Quad->new( @nodes[0..2], $nil );
+			} # Again, we have made a legit quad
+			return $st
+		}
+	}
+	# Now, we might have separate nodes, undef, or nothing
+	my @nodes;
+	my %letters = ( '0' => 's', '1' => 'p', '2' => 'o' );
+	my $i=0;
+	foreach my $term (@param[0..2]) {
+		my $node = $term || variable($letters{$i});
+		$i++;
+		push (@nodes, $node);
+	}
+	my $context = $param[3] || variable('g');
+	if (scalar @param <= 3) { # Then, the last node wasn't given at all, so override
+		$context	= RDF::Trine::Node::Nil->new;
+	}
+	return RDF::Trine::Statement::Quad->new( @nodes, $context );
+}
+
 
 =head1 DISCUSSION
 
