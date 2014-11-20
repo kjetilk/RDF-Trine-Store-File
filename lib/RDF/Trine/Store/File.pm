@@ -22,11 +22,11 @@ RDF::Trine::Store::File - Using a file with N-Triples as triplestore
 
 =head1 VERSION
 
-Version 0.1
+Version 0.11_1
 
 =cut
 
-our $VERSION = '0.1';
+our $VERSION = '0.11_1';
 
 
 =head1 SYNOPSIS
@@ -220,7 +220,9 @@ Contexts are not supported for this store.
 
 
 sub get_contexts {
-  croak "Contexts not supported for the File store";
+  my $self = shift;
+  $self->{log}->debug("Contexts not supported for the File store");
+  return RDF::Trine::Iterator->new([]);
 }
 
 =head2 size
