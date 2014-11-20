@@ -174,11 +174,6 @@ Permanently removes the store file and its data.
 sub _search_regexp {
   my $self = shift;
   my @terms = @_;
-#  if (scalar @terms <= 3) { # Then the context is probably unset
-#	  warn "FOOOOOOOO";
-#	  $terms[3] = RDF::Trine::Node::Resource->new('urn:rdf-trine-store-file-nil');
-#  }
-#  warn Data::Dumper::Dumper(\@terms);
 
   my $i = 1;
   my @stmt;
