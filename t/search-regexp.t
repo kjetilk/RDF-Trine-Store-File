@@ -31,6 +31,15 @@ note 'Triple regexps';
 
 {
 	my $regex = $store->_search_regexp(iri('http://example.org/a'),
+												  iri('http://example.org/d'),
+												  variable('o'),
+												  RDF::Trine::Node::Nil->new
+												 );
+	is($regex, '(<http://example.org/a> <http://example.org/d> .+ \.\n)', 'object variable with nil graph matches');
+}
+
+{
+	my $regex = $store->_search_regexp(iri('http://example.org/a'),
 												  variable('p'),
 												  variable('o')
 												 );
