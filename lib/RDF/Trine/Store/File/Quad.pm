@@ -227,9 +227,6 @@ sub _check_arguments {
 
 Kjetil Kjernsmo, C<< <kjetilk at cpan.org> >>
 
-=back
-
-
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2011-2012,2014 Kjetil Kjernsmo.
