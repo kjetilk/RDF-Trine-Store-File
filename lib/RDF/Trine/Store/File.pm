@@ -278,7 +278,7 @@ sub _search_regexp {
   my @nodes;
   my %letters = ( '0' => 's', '1' => 'p', '2' => 'o' );
   my $i=0;
-  foreach my $term (@param[0..2]) {
+  foreach my $term (@param[0..2]) { # TODO: improve this impeccable logic
 	  my $node = $term || variable($letters{$i});
 	  $i++;
 	  push (@nodes, $node);
