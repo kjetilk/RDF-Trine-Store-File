@@ -15,4 +15,6 @@ Test::RDF::Trine::Store::all_triple_store_tests($store, $data, 0,
 																{suppress_dupe_tests => 1,
 																 update_sleep => 1
 																});
+$store->nuke;
+
 done_testing;
