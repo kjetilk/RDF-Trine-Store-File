@@ -15,6 +15,7 @@ use File::Temp qw/tempfile/;
 use Carp qw/croak/;
 use Log::Log4perl;
 use Digest::MD5 ('md5_hex');
+use List::MoreUtils qw(uniq);
 
 
 =head1 NAME
@@ -225,7 +226,7 @@ sub get_contexts {
   my $fd = File::Data->new($self->{file});
   my @contexts = $fd->SEARCH('^(?:<.*?>|_\:\w+?) <.*?> .+? (?:<.*?>|_\:\w+?) \.\n$'); # TODO: check
   if (scalar @contexts == 0) {
-	  $self->{log}->info("No quads were found in File store file");
+	  $self->{log}->info('No quads were found in File store file ' . $self->{file});
   }
   return RDF::Trine::Iterator->new([uniq(@contexts)]);
 }
