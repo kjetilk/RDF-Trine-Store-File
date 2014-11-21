@@ -162,11 +162,10 @@ sub count_statements {
 
 # Private method to actually search for statements based on a regexp.
 
-sub _search_statements {
+sub _search_statements { # TODO: no need for a separate method
   my $self = shift;
   my $regexp = $self->_search_regexp(@_);
   my $fd = File::Data->new($self->{file});
-  $self->{log}->debug("Searching with regexp $regexp");
   return $fd->SEARCH($regexp);
 }
 
@@ -300,10 +299,11 @@ sub _search_regexp {
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement(RDF::Trine::Statement::Quad->new(@stmt));
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
-  warn $triple_resources;
+#  warn $triple_resources;
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-(?:s|g)>/(?:<.*?>|_\:\\w+?)/g;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-s>/(?:<.*?>|_\:\\w+?)/g;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-g> /(?:(?:<.*?>|_\:\\w+?) )?/g;
   $triple_resources =~ s/urn:rdf-trine-store-file-p/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-o>/.+/;
   $triple_resources =~ s/\^/\\^/g;
