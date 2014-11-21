@@ -302,8 +302,8 @@ sub _search_regexp {
 #  warn $triple_resources;
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-s>/(?:<.*?>|_\:\\w+?)/g;
-  $triple_resources =~ s/<urn:rdf-trine-store-file-g> /(?:(?:<.*?>|_\:\\w+?) )?/g;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-s>/(?:<.*?>|_\:\\w+?)/;
+  $triple_resources =~ s/<urn:rdf-trine-store-file-g> /(?:(?:<.*?>|_\:\\w+?) )?/;
   $triple_resources =~ s/urn:rdf-trine-store-file-p/.*?/;
   $triple_resources =~ s/<urn:rdf-trine-store-file-o>/.+/;
   $triple_resources =~ s/\^/\\^/g;
