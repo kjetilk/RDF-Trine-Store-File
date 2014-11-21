@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use base qw(RDF::Trine::Store);
 use RDF::Trine::Error qw(:try);
+use RDF::Trine qw(iri variable);
 use RDF::Trine::Serializer::NTriples;
 use RDF::Trine::Parser;
 use File::Data;
@@ -271,11 +272,24 @@ sub nuke {
 
 sub _search_regexp {
   my $self = shift;
-  my @nodes = @_;
+  my @param = @_;
+  # Now, we might have separate nodes, undef, or nothing
+  my @nodes;
+  my %letters = ( '0' => 's', '1' => 'p', '2' => 'o' );
+  my $i=0;
+  foreach my $term (@param[0..2]) {
+	  my $node = $term || variable($letters{$i});
+	  $i++;
+	  push (@nodes, $node);
+  }
+  my $context = $param[3] || variable('g');
+  if (scalar @param <= 3) { # Then, the last node wasn't given at all, so override
+	  $context	= RDF::Trine::Node::Nil->new;
+  }
+  my $st = RDF::Trine::Statement::Quad->new( @nodes, $context );
   warn Data::Dumper::Dumper(\@nodes);
-  my $i = 1;
   my @stmt;
-  foreach my $node (@nodes) { # Create an array of RDF terms for later replacing for variables, discard context
+  foreach my $node ($st->nodes) { # Create an array of RDF terms for later replacing for variables, discard context
     my $outterm = $node;
 	 if ($node->is_variable) {
 		 $outterm = RDF::Trine::Node::Resource->new('urn:rdf-trine-store-file-' . $node->name);
@@ -283,7 +297,7 @@ sub _search_regexp {
     push(@stmt, $outterm);
   }
   my $mm = RDF::Trine::Model->temporary_model;
-  $mm->add_statement(RDF::Trine::Statement->new(@stmt));
+  $mm->add_statement(RDF::Trine::Statement::Quad->new(@stmt));
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
   warn $triple_resources;
   chomp($triple_resources);
@@ -322,21 +336,9 @@ sub _check_arguments {
 			} # Again, we have made a legit quad
 			return $st
 		}
+	} else {
+		throw RDF::Trine::Error::MethodInvocationError -text => "Method must be called with a RDF::Trine::Statement";
 	}
-	# Now, we might have separate nodes, undef, or nothing
-	my @nodes;
-	my %letters = ( '0' => 's', '1' => 'p', '2' => 'o' );
-	my $i=0;
-	foreach my $term (@param[0..2]) {
-		my $node = $term || variable($letters{$i});
-		$i++;
-		push (@nodes, $node);
-	}
-	my $context = $param[3] || variable('g');
-	if (scalar @param <= 3) { # Then, the last node wasn't given at all, so override
-		$context	= RDF::Trine::Node::Nil->new;
-	}
-	return RDF::Trine::Statement::Quad->new( @nodes, $context );
 }
 
 
