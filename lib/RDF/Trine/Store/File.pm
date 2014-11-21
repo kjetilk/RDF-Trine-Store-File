@@ -278,7 +278,8 @@ sub _search_regexp {
   my %letters = ( '0' => 's', '1' => 'p', '2' => 'o' );
   my $i=0;
   foreach my $term (@param[0..2]) { # TODO: improve this impeccable logic
-	  my $node = $term || variable($letters{$i});
+	  my $node = $term || variable($letters{$i}); # If we get an undef, make it a variable
+	  $node = variable($letters{$i}) if $node->is_variable; # Eliminate any other variable names
 	  $i++;
 	  push (@nodes, $node);
   }
@@ -287,7 +288,6 @@ sub _search_regexp {
 	  $context	= RDF::Trine::Node::Nil->new;
   }
   my $st = RDF::Trine::Statement::Quad->new( @nodes, $context );
-#  warn Data::Dumper::Dumper(\@nodes);
   my @stmt;
   foreach my $node ($st->nodes) { # Create an array of RDF terms for later replacing for variables, discard context
     my $outterm = $node;
@@ -299,7 +299,6 @@ sub _search_regexp {
   my $mm = RDF::Trine::Model->temporary_model;
   $mm->add_statement(RDF::Trine::Statement::Quad->new(@stmt));
   my $triple_resources = $self->{nser}->serialize_model_to_string($mm);
-#  warn $triple_resources;
   chomp($triple_resources);
   $triple_resources =~ s/\.\s*$/\\./;
   $triple_resources =~ s/<urn:rdf-trine-store-file-s>/(?:<.*?>|_\:\\w+?)/;
