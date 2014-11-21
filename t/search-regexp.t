@@ -46,6 +46,15 @@ note 'Triple regexps';
 	is($regex, '(<http://example.org/a> <.*?> .+ \.\n)', 'predicate and object variable matches');
 }
 
+{
+	my $regex = $store->_search_regexp(iri('http://example.org/a'),
+												  variable('foo'),
+												  variable('bar')
+												 );
+	is($regex, '(<http://example.org/a> <.*?> .+ \.\n)', 'predicate and object variable matches, other names');
+}
+
+
 note 'Quad regexps';
 
 {
