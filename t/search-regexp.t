@@ -74,7 +74,7 @@ note 'Quad regexps';
 												  iri('http://example.org/d'),
 												  variable('g'),
 												 );
-	is($regex, '((?:<.*?>|_:\w+?) <http://example.org/a> <http://example.org/d> (?:<.*?>|_:\w+?) \.\n)', 'subject and graph variable matches');
+	is($regex, '((?:<.*?>|_:\w+?) <http://example.org/a> <http://example.org/d> (?:(?:<.*?>|_:\w+?) )?\.\n)', 'subject and graph variable matches');
 }
 
 {
@@ -84,7 +84,7 @@ note 'Quad regexps';
 												  variable('o'),
 												  variable('g')
 												 );
-	is($regex, '(<http://example.org/a> <.*?> .+ (?:<.*?>|_:\w+?) \.\n)', 'predicate, object and graph variable matches');
+	is($regex, '(<http://example.org/a> <.*?> .+ (?:(?:<.*?>|_:\w+?) )?\.\n)', 'predicate, object and graph variable matches');
 }
 
 
