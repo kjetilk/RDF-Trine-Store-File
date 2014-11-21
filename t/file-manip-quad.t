@@ -9,11 +9,11 @@ use Log::Log4perl qw(:easy);
 
 Log::Log4perl->easy_init( { level   =>  $TRACE} ) if $ENV{TEST_VERBOSE};
 
-use_ok('RDF::Trine::Store::File::Quad');
+use_ok('RDF::Trine::Store::File');
 
 my ($fh, $filename) = tempfile(EXLOCK => 0);
 
-my $store = RDF::Trine::Store::File::Quad->new($filename);
+my $store = RDF::Trine::Store::File->new($filename);
 
 ok($store, 'Store object OK');
 
@@ -143,7 +143,7 @@ sleep(1); # to allow the FH from the previous ok() to be flushed
 
 
 {
-  my $store2 = RDF::Trine::Store::File::Quad->new_with_string('File::Quad;' . $filename);
+  my $store2 = RDF::Trine::Store::File->new_with_string('File;' . $filename);
 
   ok($store2, 'Store with string config object OK');
 
