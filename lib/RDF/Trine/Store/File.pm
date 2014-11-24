@@ -140,12 +140,10 @@ predicate and objects. Any of the arguments may be undef to match any value.
 
 sub get_statements {
   my $self = shift;
-  my @lines = $self->_search_statements(@_);
-  my $parser = RDF::Trine::Parser->new($self->{parser});
-  my $mm = RDF::Trine::Model->temporary_model;
-  $parser->parse_into_model( '', join('', @lines), $mm );
+  my $mm = $self->_search_statements(@_);
   return $mm->as_stream;
 }
+
 
 =head2 count_statements($subject, $predicate, $object)
 
@@ -156,17 +154,21 @@ predicate and objects. Any of the arguments may be undef to match any value.
 
 sub count_statements {
   my $self = shift;
-  my @lines = $self->_search_statements(@_);
-  return scalar @lines;
+  my $mm = $self->_search_statements(@_);
+  return $mm->size;
 }
 
 # Private method to actually search for statements based on a regexp.
 
-sub _search_statements { # TODO: no need for a separate method
+sub _search_statements {
   my $self = shift;
   my $regexp = $self->_search_regexp(@_);
   my $fd = File::Data->new($self->{file});
-  return $fd->SEARCH($regexp);
+  my @lines = $fd->SEARCH($regexp);
+  my $parser = RDF::Trine::Parser->new($self->{parser});
+  my $mm = RDF::Trine::Model->temporary_model;
+  $parser->parse_into_model( '', join('', @lines), $mm );
+  return $mm;
 }
 
 
