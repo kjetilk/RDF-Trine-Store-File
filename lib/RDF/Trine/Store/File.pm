@@ -63,7 +63,6 @@ sub new {
 		    {
 		     file => $file,
 		     fu	  => $fu,
-			  parser => 'nquads',
 		     nser => RDF::Trine::Serializer::NQuads->new,
 		     log  => Log::Log4perl->get_logger("rdf.trine.store.file")
 		    }, $class);
@@ -162,12 +161,36 @@ sub count_statements {
 
 sub _search_statements {
   my $self = shift;
-  my $regexp = $self->_search_regexp(@_);
+  my @params = @_;
+  warn Data::Dumper::Dumper(\@params);
+  warn scalar @params;
+  my $regexp = $self->_search_regexp(@params);
   my $fd = File::Data->new($self->{file});
   my @lines = $fd->SEARCH($regexp);
-  my $parser = RDF::Trine::Parser->new($self->{parser});
+  my $parsertype = 'nquads';
+  if (scalar @params <= 3) {
+	  $parsertype = 'ntriples';
+  }
+  my $parser = RDF::Trine::Parser->new('nquads');
   my $mm = RDF::Trine::Model->temporary_model;
-  $parser->parse_into_model( '', join('', @lines), $mm );
+  my $i = 0;
+  my $handler = sub { # If triples were searched for and we have quad, we need to delete the context
+	  my $st  = shift;
+
+	  if (($parsertype eq 'ntriples') &&
+			$st->isa('RDF::Trine::Statement::Quad')) {
+		  my @nodes = $st->nodes;
+		  $st = RDF::Trine::Statement->new(@nodes[0..2]);
+	  }
+	  $i++;
+	  warn $i . "\t" . $st->as_string;
+	  $mm->add_statement($st);
+  };
+  
+  foreach my $line (@lines) {
+	  $parser->parse( '', $line, $handler);
+  }
+
   return $mm;
 }
 
@@ -203,6 +226,8 @@ Removes all statement matching the specified subject, predicate and
 objects. Any of the arguments may be undef to match any value.
 
 =cut
+
+# TODO: graph
 
 sub remove_statements {
   my $self = shift;
