@@ -17,7 +17,7 @@ isa_ok( $store, 'RDF::Trine::Store::File' );
 
 Test::RDF::Trine::Store::all_store_tests($store, $data, 0,
 													  {suppress_dupe_tests => 1,
-														update_sleep => 1
+														update_sleep => 0
 													  });
 
 $store->nuke;
