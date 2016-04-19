@@ -138,6 +138,10 @@ predicate and objects. Any of the arguments may be undef to match any value.
 
 sub get_statements {
   my $self = shift;
+  if (scalar @_ > 3) {
+	  $self->{log}->warn("More than three arguments to get_statements not supported for the File store");
+	  return RDF::Trine::Iterator->new([]);
+  }
   my @lines = $self->_search_statements(@_);
   my $parser = RDF::Trine::Parser->new( 'ntriples' );  
   my $mm = RDF::Trine::Model->temporary_model;
@@ -154,6 +158,10 @@ predicate and objects. Any of the arguments may be undef to match any value.
 
 sub count_statements {
   my $self = shift;
+  if (scalar @_ > 3) {
+	  $self->{log}->warn("More than three arguments to count_statements not supported for the File store");
+	  return 0;
+  }
   my @lines = $self->_search_statements(@_);
   return scalar @lines;
 }
@@ -202,6 +210,10 @@ objects. Any of the arguments may be undef to match any value.
 
 sub remove_statements {
   my $self = shift;
+  if (scalar @_ > 3) {
+	  $self->{log}->warn("More than three arguments to remove_statements not supported for the File store");
+	  return;
+  }
   my $regexp = $self->_search_regexp(@_);
   my $fd = File::Data->new($self->{file});
   $self->{log}->debug("Removing with regexp $regexp");
